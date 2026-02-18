@@ -1,8 +1,20 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Sistema PYME";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mt-5">
+    <h1 class="mb-4">🏢Sistema de Gestión PYME</h1>
+    <p class="mb-4 text-muted">
+        Sistema de administración de usuarios y roles
+    </p>
+
+    <div class="d-flex justify-content-center gap-4">
+        <a asp-controller="Usuario"
+           asp-action="Index"
+           class="btn btn-primary btn-lg">Usuarios</a>
+
+        <a asp-controller="Rol"
+           asp-action="Index"
+           class="btn btn-success btn-lg">Roles</a>
+    </div>
 </div>

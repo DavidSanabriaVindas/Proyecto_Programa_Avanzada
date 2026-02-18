@@ -1,0 +1,68 @@
+﻿@model List<PYME.Models.Usuario>
+
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<h2 class="mb-3">👥 Gestión de Usuarios</h2>
+
+<a asp-action="Crear" class="btn btn-success mb-3">
+    ➕ Registrar nuevo usuario
+</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre Completo</th>
+            <th>Username</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.Nombre @usuario.Primer_Apellido @usuario.Segundo_Apellido</td>
+                <td>@usuario.Username</td>
+                <td>@usuario.Rol?.Nombre</td>
+                <td>
+                    @if (usuario.Estado)
+                    {
+                        <span class="badge bg-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactivo</span>
+                    }
+                </td>
+                <td>@usuario.Telefono</td>
+                <td>@usuario.Correo</td>
+                <td>
+                    <a asp-action="Detalle"
+                       asp-route-id="@usuario.Id_Usuario"
+                       class="btn btn-primary btn-sm">
+                        Ver detalle
+                    </a>
+                    <a asp-action="Editar"
+                       asp-route-id="@usuario.Id_Usuario"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+                    <form asp-action="Eliminar"
+                          asp-route-id="@usuario.Id_Usuario"
+                          method="post"
+                          style="display:inline;"
+                          onsubmit="return confirm('¿Está seguro de eliminar este usuario?');">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
