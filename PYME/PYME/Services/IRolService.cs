@@ -1,6 +1,13 @@
-﻿namespace PYME.Services
+﻿using PYME.Models;
+namespace PYME.Services
 {
-    public interface IRol
+    public interface IRolService
     {
+        List<Rol> ObtenerTodos();
+        List<Rol> ObtenerActivos();
+        Rol? ObtenerPorId(int id);
+        bool CrearRol(Rol rol);
+        bool ActualizarRol(Rol rol);
+        bool EliminarRol(int id);
     }
 }
