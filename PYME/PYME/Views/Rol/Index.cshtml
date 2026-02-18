@@ -1,0 +1,62 @@
+﻿@model List<PYME.Models.Rol>
+
+@{
+    ViewData["Title"] = "Roles";
+}
+
+<h2 class="mb-3">🔑 Gestión de Roles</h2>
+
+<a asp-action="Crear" class="btn btn-success mb-3">
+    ➕ Registrar nuevo rol
+</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Estado</th>
+            <th>Usuarios Asignados</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var rol in Model)
+        {
+            <tr>
+                <td>@rol.Nombre</td>
+                <td>
+                    @if (rol.Estado)
+                    {
+                        <span class="badge bg-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Inactivo</span>
+                    }
+                </td>
+                <td>@rol.Usuarios.Count</td>
+                <td>
+                    <a asp-action="Detalle"
+                       asp-route-id="@rol.Id_Rol"
+                       class="btn btn-primary btn-sm">
+                        Ver detalle
+                    </a>
+                    <a asp-action="Editar"
+                       asp-route-id="@rol.Id_Rol"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+                    <form asp-action="Eliminar"
+                          asp-route-id="@rol.Id_Rol"
+                          method="post"
+                          style="display:inline;"
+                          onsubmit="return confirm('¿Está seguro de eliminar este rol?');">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
