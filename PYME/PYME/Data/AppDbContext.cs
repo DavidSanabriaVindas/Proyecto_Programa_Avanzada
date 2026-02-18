@@ -1,6 +1,34 @@
-﻿namespace PYME.Data
+﻿using Microsoft.EntityFrameworkCore;
+using PYME.Models;
+using System.Reflection.Emit;
+
+namespace PYME.Data
 {
-    public class AppDbContext
+    public class AppDbContext : DbContext
     {
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+           : base(options)
+        {
+        }
+
+        public DbSet<Rol> Roles { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Rol <-> Usuario (1 a muchos)
+            modelBuilder.Entity<Usuario>()
+                .HasOne(u => u.Rol)
+                .WithMany(r => r.Usuarios)
+                .HasForeignKey(u => u.Id_Rol)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Username único
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Username)
+                .IsUnique();
+        }
     }
 }
