@@ -24,7 +24,7 @@ namespace PYME.Controllers
         [HttpGet("detalle/{id:int}")]
         public IActionResult Detalle(int id)
         {
-            var rol = _rolService.ObtenerPorId(id);
+            var rol = _rolService.ObtenerDetalle(id);
 
             if (rol == null)
                 return NotFound();
@@ -52,7 +52,7 @@ namespace PYME.Controllers
         [HttpGet("editar/{id:int}")]
         public IActionResult Editar(int id)
         {
-            var rol = _rolService.ObtenerPorId(id);
+            var rol = _rolService.ObtenerDetalle(id);
 
             if (rol == null)
                 return NotFound();

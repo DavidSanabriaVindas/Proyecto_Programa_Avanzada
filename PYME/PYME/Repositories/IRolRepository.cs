@@ -10,5 +10,6 @@ namespace PYME.Repositories
         void Agregar(Rol rol);
         void Actualizar(Rol rol);
         void Eliminar(int id);
+        bool ExisteId(int id_Rol);
     }
 }

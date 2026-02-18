@@ -6,40 +6,48 @@
 
 <h2 class="mb-3">Crear Usuario</h2>
 
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <h5>Por favor corrija los siguientes errores:</h5>
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
 <form asp-action="Crear" method="post" class="row g-3">
 
     <div class="col-md-4">
-        <label asp-for="Nombre" class="form-label">Nombre</label>
+        <label asp-for="Nombre" class="form-label">Nombre *</label>
         <input asp-for="Nombre" class="form-control" />
         <span asp-validation-for="Nombre" class="text-danger"></span>
     </div>
 
     <div class="col-md-4">
-        <label asp-for="Primer_Apellido" class="form-label">Primer Apellido</label>
+        <label asp-for="Primer_Apellido" class="form-label">Primer Apellido *</label>
         <input asp-for="Primer_Apellido" class="form-control" />
         <span asp-validation-for="Primer_Apellido" class="text-danger"></span>
     </div>
 
     <div class="col-md-4">
-        <label asp-for="Segundo_Apellido" class="form-label">Segundo Apellido</label>
+        <label asp-for="Segundo_Apellido" class="form-label">Segundo Apellido *</label>
         <input asp-for="Segundo_Apellido" class="form-control" />
         <span asp-validation-for="Segundo_Apellido" class="text-danger"></span>
     </div>
 
-    <div class="col-md-6">
-        <label asp-for="Username" class="form-label">Username</label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
 
     <div class="col-md-6">
-        <label asp-for="Password" class="form-label">Contraseña</label>
-        <input asp-for="Password" type="password" class="form-control" />
+        <label asp-for="Password" class="form-label">Contraseña *</label>
+        <input asp-for="Password" type="password" class="form-control" autocomplete="new-password" />
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Id_Rol" class="form-label">Rol</label>
+        <label asp-for="Id_Rol" class="form-label">Rol *</label>
         <select asp-for="Id_Rol" class="form-select">
             <option value="">Seleccione un rol</option>
             @foreach (var rol in ViewBag.Roles as List<PYME.Models.Rol>)
@@ -52,25 +60,25 @@
 
     <div class="col-md-6">
         <label asp-for="Telefono" class="form-label">Teléfono</label>
-        <input asp-for="Telefono" type="number" class="form-control" />
+        <input asp-for="Telefono" type="number" class="form-control" placeholder="Ej: 88888888" />
         <span asp-validation-for="Telefono" class="text-danger"></span>
     </div>
 
     <div class="col-md-6">
         <label asp-for="Correo" class="form-label">Correo</label>
-        <input asp-for="Correo" type="email" class="form-control" />
+        <input asp-for="Correo" type="email" class="form-control" placeholder="ejemplo@correo.com" />
         <span asp-validation-for="Correo" class="text-danger"></span>
     </div>
 
     <div class="col-md-6">
         <label asp-for="Direccion_Exacta" class="form-label">Dirección Exacta</label>
-        <input asp-for="Direccion_Exacta" class="form-control" />
+        <input asp-for="Direccion_Exacta" class="form-control" placeholder="Dirección completa" />
         <span asp-validation-for="Direccion_Exacta" class="text-danger"></span>
     </div>
 
     <div class="col-md-12">
         <div class="form-check">
-            <input asp-for="Estado" class="form-check-input" type="checkbox" />
+            <input asp-for="Estado" class="form-check-input" type="checkbox" checked />
             <label asp-for="Estado" class="form-check-label">
                 Usuario Activo
             </label>
@@ -79,10 +87,10 @@
 
     <div class="col-12">
         <button type="submit" class="btn btn-primary">
-            Guardar
+            <i class="bi bi-save"></i> Guardar
         </button>
         <a asp-action="Index" class="btn btn-secondary">
-            Cancelar
+            <i class="bi bi-arrow-left"></i> Cancelar
         </a>
     </div>
 </form>
