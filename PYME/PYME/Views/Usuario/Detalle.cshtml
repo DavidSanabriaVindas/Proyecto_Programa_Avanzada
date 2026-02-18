@@ -1,0 +1,38 @@
+﻿@model PYME.Models.Usuario
+
+@{
+    ViewData["Title"] = "Detalle del Usuario";
+}
+
+<h2 class="mb-3">Detalle del Usuario</h2>
+
+<div class="card shadow" style="max-width: 800px;">
+    <div class="card-body">
+        <h4 class="card-title">@model.Nombre @model.Primer_Apellido @model.Segundo_Apellido</h4>
+
+        <p class="card-text">
+            <strong>Username:</strong> @Model.Username <br />
+            <strong>Rol:</strong> @Model.Rol?.Nombre <br />
+            <strong>Estado:</strong> 
+            @if (Model.Estado)
+            {
+                <span class="badge bg-success">Activo</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Inactivo</span>
+            }
+            <br />
+            <strong>Teléfono:</strong> @Model.Telefono <br />
+            <strong>Correo:</strong> @Model.Correo <br />
+            <strong>Dirección:</strong> @Model.Direccion_Exacta
+        </p>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Volver al listado
+        </a>
+        <a asp-action="Editar" asp-route-id="@Model.Id_Usuario" class="btn btn-warning">
+            Editar
+        </a>
+    </div>
+</div>
