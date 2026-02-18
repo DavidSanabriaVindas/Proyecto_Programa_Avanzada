@@ -15,8 +15,9 @@ namespace PYME.Models
         public string Primer_Apellido { get; set; } 
 
         [Required(ErrorMessage = "El segundo apellido es obligatorio.")]
-        public string Segundo_Apellido { get; set; } 
+        public string Segundo_Apellido { get; set; }
 
+        [Required]
         public string? Username { get; set; }
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
@@ -33,7 +34,6 @@ namespace PYME.Models
         [EmailAddress(ErrorMessage = "El formato del correo no es válido")]
         public string? Correo { get; set; }
 
-        // FK con Rol
         [Required(ErrorMessage = "Debe seleccionar un rol")]
         [ForeignKey(nameof(Rol))]
         public int Id_Rol { get; set; }

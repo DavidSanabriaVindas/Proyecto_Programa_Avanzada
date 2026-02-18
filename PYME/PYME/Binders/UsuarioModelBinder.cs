@@ -12,23 +12,32 @@ namespace PYME.Binders
             var nombre = request.Form["Nombre"].ToString();
             var primerApellido = request.Form["Primer_Apellido"].ToString();
             var segundoApellido = request.Form["Segundo_Apellido"].ToString();
-            var username = request.Form["Username"].ToString();
             var password = request.Form["Password"].ToString();
             var direccionExacta = request.Form["Direccion_Exacta"].ToString();
             var telefonoTexto = request.Form["Telefono"].ToString();
             var correo = request.Form["Correo"].ToString();
             var idRolTexto = request.Form["Id_Rol"].ToString();
-            var estadoTexto = request.Form["Estado"].ToString();
             var idUsuarioTexto = request.Form["Id_Usuario"].ToString();
+
+            bool estado = request.Form["Estado"].Contains("true");
 
             int.TryParse(telefonoTexto, out int telefono);
             int.TryParse(idRolTexto, out int idRol);
-            bool estado = estadoTexto == "true" || estadoTexto == "on";
             int.TryParse(idUsuarioTexto, out int idUsuario);
 
-            var usernameGenerado = string.IsNullOrWhiteSpace(username)
-                ? $"{nombre}.{primerApellido}".Replace(" ", "").ToLower()
-                : username;
+            string usernameGenerado;
+
+            if (!string.IsNullOrWhiteSpace(nombre) &&
+                !string.IsNullOrWhiteSpace(primerApellido))
+            {
+                usernameGenerado = $"{nombre}.{primerApellido}"
+                    .Replace(" ", "")
+                    .ToLower();
+            }
+            else
+            {
+                usernameGenerado = Guid.NewGuid().ToString("N");
+            }
 
             var usuario = new Usuario
             {

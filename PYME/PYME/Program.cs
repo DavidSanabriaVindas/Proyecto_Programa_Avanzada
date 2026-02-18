@@ -2,12 +2,16 @@ using Microsoft.EntityFrameworkCore;
 using PYME.Data;
 using PYME.Repositories;
 using PYME.Services;
+using PYME.Binders;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.ModelBinderProviders.Insert(0, new UsuarioModelBinderProvider());
+});
 
 // Configure database context
 builder.Services.AddDbContext<AppDbContext>(options =>

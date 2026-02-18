@@ -40,7 +40,6 @@ namespace PYME.Repositories
 
         public void Actualizar(Usuario usuario)
         {
-            // Desconectar cualquier entidad que esté siendo rastreada
             var existingEntity = _context.Usuarios.Local
                 .FirstOrDefault(u => u.Id_Usuario == usuario.Id_Usuario);
 
