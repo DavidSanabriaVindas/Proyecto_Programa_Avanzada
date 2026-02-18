@@ -7,11 +7,11 @@ namespace PYME.Controllers
     [Route("usuario")]
     public class UsuarioController : Controller
     {
-        private readonly IUsuariosService _usuarioService;
+        private readonly IUsuarioService _usuarioService;
         private readonly IRolService _rolService;
 
         public UsuarioController(
-            IUsuariosService usuarioService,
+            IUsuarioService usuarioService,
             IRolService rolService)
         {
             _usuarioService = usuarioService;

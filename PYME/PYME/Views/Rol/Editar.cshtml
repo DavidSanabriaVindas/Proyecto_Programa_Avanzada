@@ -1,0 +1,44 @@
+﻿@model PYME.Models.Rol
+
+@{
+    ViewData["Title"] = "Editar Rol";
+}
+
+<h2 class="mb-3">Editar Rol</h2>
+
+<form asp-action="Editar"
+      asp-route-id="@Model.Id_Rol"
+      method="post"
+      class="row g-3">
+
+    <input type="hidden" asp-for="Id_Rol" />
+
+    <div class="col-md-8">
+        <label asp-for="Nombre" class="form-label">Nombre del Rol</label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-check">
+            <input asp-for="Estado" class="form-check-input" type="checkbox" />
+            <label asp-for="Estado" class="form-check-label">
+                Rol Activo
+            </label>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">
+            Guardar cambios
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            Cancelar
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+}

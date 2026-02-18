@@ -1,0 +1,68 @@
+﻿@model PYME.Models.Rol
+
+@{
+    ViewData["Title"] = "Detalle del Rol";
+}
+
+<h2 class="mb-3">Detalle del Rol</h2>
+
+<div class="card shadow" style="max-width: 800px;">
+    <div class="card-body">
+        <h4 class="card-title">🔑 @Model.Nombre</h4>
+
+        <p class="card-text">
+            <strong>Estado:</strong>
+            @if (Model.Estado)
+            {
+                <span class="badge bg-success">Activo</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">Inactivo</span>
+            }
+        </p>
+
+        <hr />
+
+        <h5>👥 Usuarios con este Rol (@Model.Usuarios.Count)</h5>
+
+        @if (Model.Usuarios.Any())
+        {
+            <div class="list-group mb-3">
+                @foreach (var usuario in Model.Usuarios.OrderBy(u => u.Nombre))
+                {
+                    <a asp-controller="Usuario"
+                       asp-action="Detalle"
+                       asp-route-id="@usuario.Id_Usuario"
+                       class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">@usuario.Nombre @usuario.Primer_Apellido @usuario.Segundo_Apellido</h6>
+                            <small>@usuario.Username</small>
+                        </div>
+                        <p class="mb-1">
+                            @if (usuario.Estado)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactivo</span>
+                            }
+                        </p>
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">No hay usuarios asignados a este rol.</p>
+        }
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Volver al listado
+        </a>
+        <a asp-action="Editar" asp-route-id="@Model.Id_Rol" class="btn btn-warning">
+            Editar
+        </a>
+    </div>
+</div>

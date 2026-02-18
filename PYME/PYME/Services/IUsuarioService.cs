@@ -2,7 +2,7 @@
 
 namespace PYME.Services
 {
-    public interface IUsuariosService
+    public interface IUsuarioService
     {
         List<Usuario> ObtenerTodos(); 
         Usuario? ObtenerDetalle(int id);
