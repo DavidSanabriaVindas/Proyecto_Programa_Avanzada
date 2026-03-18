@@ -1,5 +1,6 @@
 ﻿using PYME.Models;
 using PYME.Repositories;
+
 namespace PYME.Services
 {
     public class ProductoService : IProductoService
@@ -17,49 +18,35 @@ namespace PYME.Services
         public Producto? ObtenerDetalle(int id)
             => _repository.ObtenerPorId(id);
 
-        public bool CrearProducto(ProductoViewModel modelo)
+        public bool CrearProducto(Producto producto)
         {
-            var productos = _repository.ObtenerTodos();
-
-            if (productos.Any(p => p.SKU == modelo.SKU))
+            if (_repository.ObtenerTodos().Any(p => p.SKU == producto.SKU))
                 return false;
 
-            var producto = new Producto
-            {
-                SKU = modelo.SKU,
-                Nombre = modelo.Nombre,
-                Descripcion = modelo.Descripcion,
-                Precio_Costo = modelo.Precio_Costo,
-                Precio_Venta = modelo.Precio_Venta,
-                Stock_Actual = modelo.Stock_Actual,
-                Stock_Minimo = modelo.Stock_Minimo,
-                Estado = modelo.Estado,
-                Fecha_Creacion = DateTime.Now
-            };
+            producto.Stock_Actual = 0;
+            producto.Fecha_Creacion = DateTime.Now;
 
             _repository.Agregar(producto);
             return true;
         }
 
-        public bool ActualizarProducto(int id, ProductoViewModel modelo)
+        public bool ActualizarProducto(int id, Producto producto)
         {
             var productoExistente = _repository.ObtenerPorId(id);
             if (productoExistente == null)
                 return false;
 
-            var productos = _repository.ObtenerTodos();
-            if (productoExistente.SKU != modelo.SKU
-                && productos.Any(p => p.SKU == modelo.SKU))
+            if (productoExistente.SKU != producto.SKU
+                && _repository.ObtenerTodos().Any(p => p.SKU == producto.SKU))
                 return false;
 
-            productoExistente.SKU = modelo.SKU;
-            productoExistente.Nombre = modelo.Nombre;
-            productoExistente.Descripcion = modelo.Descripcion;
-            productoExistente.Precio_Costo = modelo.Precio_Costo;
-            productoExistente.Precio_Venta = modelo.Precio_Venta;
-            productoExistente.Stock_Actual = modelo.Stock_Actual;
-            productoExistente.Stock_Minimo = modelo.Stock_Minimo;
-            productoExistente.Estado = modelo.Estado;
+            productoExistente.SKU = producto.SKU;
+            productoExistente.Nombre = producto.Nombre;
+            productoExistente.Descripcion = producto.Descripcion;
+            productoExistente.Precio_Costo = producto.Precio_Costo;
+            productoExistente.Precio_Venta = producto.Precio_Venta;
+            productoExistente.Stock_Minimo = producto.Stock_Minimo;
+            productoExistente.Estado = producto.Estado;
             productoExistente.Fecha_Actualizacion = DateTime.Now;
 
             _repository.Actualizar(productoExistente);
