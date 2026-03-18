@@ -26,6 +26,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Registrar Repositories
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IRolRepository, RolRepository>();
+builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 
 // Registrar Services
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
