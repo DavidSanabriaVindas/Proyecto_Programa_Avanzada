@@ -12,8 +12,8 @@ using PYME.Data;
 namespace PYME.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260318034953_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260318042140_InitialCreate2")]
+    partial class InitialCreate2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

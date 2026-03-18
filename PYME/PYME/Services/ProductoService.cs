@@ -61,5 +61,28 @@ namespace PYME.Services
             _repository.Eliminar(id);
             return true;
         }
+
+        public List<Producto> Buscar(string texto)
+        {
+            var productos = _repository.ObtenerTodos();
+
+            if (!string.IsNullOrWhiteSpace(texto))
+                productos = productos
+                    .Where(p => p.Nombre.Contains(texto, StringComparison.OrdinalIgnoreCase) ||
+                                p.SKU.Contains(texto, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+            return productos.Select(p => new Producto
+            {
+                Id_Producto = p.Id_Producto,
+                SKU = p.SKU,
+                Nombre = p.Nombre,
+                Precio_Costo = p.Precio_Costo,
+                Precio_Venta = p.Precio_Venta,
+                Stock_Actual = p.Stock_Actual,
+                Stock_Minimo = p.Stock_Minimo,
+                Estado = p.Estado
+            }).ToList();
+        }
     }
 }

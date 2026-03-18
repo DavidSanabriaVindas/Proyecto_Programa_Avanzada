@@ -1,14 +1,20 @@
 ﻿@model List<PYME.Models.Producto>
-
 @{
     ViewData["Title"] = "Productos";
 }
 
 <h2 class="mb-3">📦 Gestión de Productos</h2>
 
-<a asp-action="Crear" class="btn btn-success mb-3">
-    ➕ Registrar nuevo producto
-</a>
+<div class="row mb-3">
+    <div class="col-md-6">
+        <input type="text" id="buscador" class="form-control" placeholder="🔍 Buscar por nombre o SKU..." />
+    </div>
+    <div class="col-md-6 text-end">
+        <a asp-action="Crear" class="btn btn-success">
+            ➕ Registrar nuevo producto
+        </a>
+    </div>
+</div>
 
 <table class="table table-striped">
     <thead>
@@ -23,7 +29,7 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="tablaProductos">
         @foreach (var producto in Model)
         {
             <tr>
@@ -54,26 +60,67 @@
                 </td>
                 <td>
                     <a asp-action="Detalle"
-                           asp-route-id="@producto.Id_Producto"
-                           class="btn btn-primary btn-sm">
-                        Ver detalle
-                    </a>
+                       asp-route-id="@producto.Id_Producto"
+                       class="btn btn-primary btn-sm">Ver detalle</a>
                     <a asp-action="Editar"
-                           asp-route-id="@producto.Id_Producto"
-                           class="btn btn-warning btn-sm">
-                        Editar
-                    </a>
+                       asp-route-id="@producto.Id_Producto"
+                       class="btn btn-warning btn-sm">Editar</a>
                     <form asp-action="Eliminar"
                           asp-route-id="@producto.Id_Producto"
                           method="post"
                           style="display:inline;"
                           onsubmit="return confirm('¿Está seguro de eliminar este producto?');">
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            Eliminar
-                        </button>
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                     </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        $('#buscador').on('input', function () {
+            const texto = $(this).val();
+
+            $.ajax({
+                url: '/producto/buscar',
+                data: { texto: texto },
+                success: function (productos) {
+                    let filas = '';
+
+                    if (productos.length === 0) {
+                        filas = '<tr><td colspan="8" class="text-center text-muted">No se encontraron productos</td></tr>';
+                    } else {
+                        productos.forEach(function (p) {
+                            const stockBadge = p.stock_Actual <= p.stock_Minimo
+                                ? `<span class="badge bg-danger">${p.stock_Actual ?? 0}</span>`
+                                : `<span class="badge bg-success">${p.stock_Actual ?? 0}</span>`;
+
+                            const estadoBadge = p.estado
+                                ? `<span class="badge bg-success">Activo</span>`
+                                : `<span class="badge bg-danger">Inactivo</span>`;
+
+                            filas += `
+                                <tr>
+                                    <td>${p.sku}</td>
+                                    <td>${p.nombre}</td>
+                                    <td>₡${p.precio_Costo.toLocaleString('es-CR', {minimumFractionDigits: 2})}</td>
+                                    <td>₡${p.precio_Venta.toLocaleString('es-CR', {minimumFractionDigits: 2})}</td>
+                                    <td>${stockBadge}</td>
+                                    <td>${p.stock_Minimo}</td>
+                                    <td>${estadoBadge}</td>
+                                    <td>
+                                        <a href="/producto/detalle/${p.id_Producto}" class="btn btn-primary btn-sm">Ver detalle</a>
+                                        <a href="/producto/editar/${p.id_Producto}" class="btn btn-warning btn-sm">Editar</a>
+                                    </td>
+                                </tr>`;
+                        });
+                    }
+
+                    $('#tablaProductos').html(filas);
+                }
+            });
+        });
+    </script>
+}

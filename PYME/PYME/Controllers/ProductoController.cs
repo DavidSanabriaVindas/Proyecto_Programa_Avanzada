@@ -88,5 +88,11 @@ namespace PYME.Controllers
             _productoService.EliminarProducto(id);
             return RedirectToAction("Index");
         }
+
+        [HttpGet("buscar")]
+        public IActionResult Buscar(string texto)
+        {
+            return Json(_productoService.Buscar(texto));
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace PYME.Services
         bool CrearProducto(Producto producto);
         bool ActualizarProducto(int id, Producto producto);
         bool EliminarProducto(int id);
+        List<Producto> Buscar(string texto);
     }
 }
