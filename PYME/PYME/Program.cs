@@ -31,6 +31,11 @@ builder.Services.AddScoped<IMovimientoRepository, MovimientoRepository>();
 // Registrar Services
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IRolService, RolService>();
+builder.Services.AddScoped<IProductoService, ProductoService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IMovimientoService, MovimientoService>();
+
+
 
 var app = builder.Build();
 
