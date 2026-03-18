@@ -1,5 +1,6 @@
 ﻿using PYME.Models;
 using PYME.Repositories;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PYME.Services
 {
@@ -23,6 +24,18 @@ namespace PYME.Services
         public MovimientoInventario? ObtenerDetalle(int id)
             => _repository.ObtenerPorId(id);
 
+        public List<SelectListItem> ObtenerDescripcionesEntrada() => new List<SelectListItem>
+        {
+            new("Compra a proveedor", "Compra a proveedor"),
+            new("Otra entrada",       "Otra entrada")
+        };
+
+        public List<SelectListItem> ObtenerDescripcionesSalida() => new List<SelectListItem>
+        {
+            new("Venta",  "Venta"),
+            new("Merma",  "Merma")
+        };
+
         public (bool success, string mensaje) RegistrarEntrada(MovimientoInventario movimiento)
         {
             var producto = _productoRepository.ObtenerPorId(movimiento.Id_Producto);
@@ -37,7 +50,7 @@ namespace PYME.Services
             movimiento.Fecha_Movimiento = DateTime.Now;
             _repository.Agregar(movimiento);
 
-            return (true, $"Entrada registrada. Stock actual: {producto.Stock_Actual}");
+            return (true, "Entrada registrada.");
         }
 
         public (bool success, string mensaje) RegistrarSalida(MovimientoInventario movimiento)
@@ -47,7 +60,7 @@ namespace PYME.Services
                 return (false, "Producto no encontrado.");
 
             if (producto.Stock_Actual < movimiento.Cantidad)
-                return (false, $"Stock insuficiente. Stock actual: {producto.Stock_Actual}");
+                return (false, "Stock insuficiente.");
 
             producto.Stock_Actual -= movimiento.Cantidad;
             producto.Fecha_Actualizacion = DateTime.Now;
@@ -57,7 +70,7 @@ namespace PYME.Services
             movimiento.Fecha_Movimiento = DateTime.Now;
             _repository.Agregar(movimiento);
 
-            return (true, $"Salida registrada. Stock actual: {producto.Stock_Actual}");
+            return (true, "Salida registrada.");
         }
     }
 }
