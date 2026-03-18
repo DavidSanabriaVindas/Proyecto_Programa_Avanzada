@@ -20,7 +20,7 @@ namespace PYME.Services
 
         public bool CrearProducto(Producto producto)
         {
-            if (_repository.ObtenerTodos().Any(p => p.SKU == producto.SKU))
+            if (_repository.ExisteSKU(producto.SKU))
                 return false;
 
             producto.Stock_Actual = 0;
@@ -36,8 +36,7 @@ namespace PYME.Services
             if (productoExistente == null)
                 return false;
 
-            if (productoExistente.SKU != producto.SKU
-                && _repository.ObtenerTodos().Any(p => p.SKU == producto.SKU))
+            if (productoExistente.SKU != producto.SKU && _repository.ExisteSKU(producto.SKU))
                 return false;
 
             productoExistente.SKU = producto.SKU;

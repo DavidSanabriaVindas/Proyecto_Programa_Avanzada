@@ -6,7 +6,6 @@ namespace PYME.Services
     {
         List<Producto> ObtenerTodos();
         Producto? ObtenerDetalle(int id);
-
         bool CrearProducto(Producto producto);
         bool ActualizarProducto(int id, Producto producto);
         bool EliminarProducto(int id);
