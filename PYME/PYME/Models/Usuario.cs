@@ -38,5 +38,8 @@ namespace PYME.Models
         [ForeignKey(nameof(Rol))]
         public int Id_Rol { get; set; }
         public Rol? Rol { get; set; }
+
+        public List<MovimientoInventario> MovimientosInvetario { get; set; } = new();
+
     }
 }

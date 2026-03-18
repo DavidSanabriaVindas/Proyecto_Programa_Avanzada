@@ -15,16 +15,13 @@ namespace PYME.Models
         public string Descripcion { get; set; }
 
         [Required(ErrorMessage = "El precio costo es obligatorio.")]
-        public int? Precio_Costo { get; set; }
+        public int Precio_Costo { get; set; }
 
         [Required(ErrorMessage = "El precio venta es obligatorio.")]
-        public int? Precio_Venta { get; set; }
-
-        [Required(ErrorMessage = "El stock actual es obligatorio.")]
-        public int? Stock_Actual { get; set; }
+        public int Precio_Venta { get; set; }
 
         [Required(ErrorMessage = "El stock minimo es obligatorio.")]
-        public int? Stock_Minimo { get; set; }
+        public int Stock_Minimo { get; set; }
 
         [Required(ErrorMessage = "El estado es obligatorio.")]
         public bool Estado { get; set; } = true;
