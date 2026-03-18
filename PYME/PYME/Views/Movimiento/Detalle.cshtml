@@ -1,0 +1,49 @@
+﻿@model PYME.Models.MovimientoInventario
+
+@{
+    ViewData["Title"] = "Detalle del Movimiento";
+}
+
+<h2 class="mb-3">Detalle del Movimiento</h2>
+
+<div class="card shadow" style="max-width: 700px;">
+    <div class="card-body">
+
+        <p class="card-text">
+            <strong>Fecha:</strong> @Model.Fecha_Movimiento?.ToString("dd/MM/yyyy HH:mm") <br />
+            <strong>Tipo:</strong>
+            @if (Model.Tipo_Movimiento == "ENTRADA")
+            {
+                <span class="badge bg-success">ENTRADA</span>
+            }
+            else
+            {
+                <span class="badge bg-danger">SALIDA</span>
+            }
+            <br />
+            <strong>Cantidad:</strong> @Model.Cantidad <br />
+            <strong>Descripción:</strong> @Model.Descripcion <br />
+        </p>
+
+        <hr />
+
+        <h5>📦 Producto</h5>
+        <p>
+            <strong>Nombre:</strong> @Model.Producto?.Nombre <br />
+            <strong>SKU:</strong> @Model.Producto?.SKU <br />
+            <strong>Stock Actual:</strong> @Model.Producto?.Stock_Actual
+        </p>
+
+        <hr />
+
+        <h5>👤 Usuario</h5>
+        <p>
+            <strong>Username:</strong> @Model.Usuario?.Username <br />
+            <strong>Nombre:</strong> @Model.Usuario?.Nombre @Model.Usuario?.Primer_Apellido @Model.Usuario?.Segundo_Apellido
+        </p>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Volver al listado
+        </a>
+    </div>
+</div>

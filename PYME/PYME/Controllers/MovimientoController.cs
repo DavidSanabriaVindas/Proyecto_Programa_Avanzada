@@ -9,13 +9,16 @@ namespace PYME.Controllers
     {
         private readonly IMovimientoService _movimientoService;
         private readonly IProductoService _productoService;
+        private readonly IUsuarioService _usuarioService;
 
         public MovimientoController(
             IMovimientoService movimientoService,
-            IProductoService productoService)
+            IProductoService productoService,
+            IUsuarioService usuarioService)
         {
             _movimientoService = movimientoService;
             _productoService = productoService;
+            _usuarioService = usuarioService;
         }
 
         [HttpGet("")]
@@ -50,6 +53,7 @@ namespace PYME.Controllers
         public IActionResult Entrada()
         {
             ViewBag.Productos = _productoService.ObtenerTodos();
+            ViewBag.Usuarios = _usuarioService.ObtenerTodos();
             ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesEntrada();
             return View(new MovimientoInventario());
         }
@@ -60,6 +64,7 @@ namespace PYME.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Productos = _productoService.ObtenerTodos();
+                ViewBag.Usuarios = _usuarioService.ObtenerTodos();
                 ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesEntrada();
                 return View(movimiento);
             }
@@ -69,6 +74,7 @@ namespace PYME.Controllers
             {
                 ModelState.AddModelError("", mensaje);
                 ViewBag.Productos = _productoService.ObtenerTodos();
+                ViewBag.Usuarios = _usuarioService.ObtenerTodos();
                 ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesEntrada();
                 return View(movimiento);
             }
@@ -81,6 +87,7 @@ namespace PYME.Controllers
         public IActionResult Salida()
         {
             ViewBag.Productos = _productoService.ObtenerTodos();
+            ViewBag.Usuarios = _usuarioService.ObtenerTodos();
             ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesSalida();
             return View(new MovimientoInventario());
         }
@@ -91,6 +98,7 @@ namespace PYME.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Productos = _productoService.ObtenerTodos();
+                ViewBag.Usuarios = _usuarioService.ObtenerTodos();
                 ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesSalida();
                 return View(movimiento);
             }
@@ -100,6 +108,7 @@ namespace PYME.Controllers
             {
                 ModelState.AddModelError("", mensaje);
                 ViewBag.Productos = _productoService.ObtenerTodos();
+                ViewBag.Usuarios = _usuarioService.ObtenerTodos();
                 ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesSalida();
                 return View(movimiento);
             }

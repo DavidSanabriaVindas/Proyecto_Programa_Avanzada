@@ -46,6 +46,8 @@ namespace PYME.Services
             producto.Fecha_Actualizacion = DateTime.Now;
             _productoRepository.Actualizar(producto);
 
+            movimiento.Producto = null;
+            movimiento.Usuario = null;
             movimiento.Tipo_Movimiento = "ENTRADA";
             movimiento.Fecha_Movimiento = DateTime.Now;
             _repository.Agregar(movimiento);
@@ -66,6 +68,8 @@ namespace PYME.Services
             producto.Fecha_Actualizacion = DateTime.Now;
             _productoRepository.Actualizar(producto);
 
+            movimiento.Producto = null;
+            movimiento.Usuario = null;
             movimiento.Tipo_Movimiento = "SALIDA";
             movimiento.Fecha_Movimiento = DateTime.Now;
             _repository.Agregar(movimiento);

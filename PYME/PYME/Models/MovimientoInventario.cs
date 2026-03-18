@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace PYME.Models
 {
@@ -10,10 +11,14 @@ namespace PYME.Models
 
         [ForeignKey(nameof(Producto))]
         public int Id_Producto { get; set; }
+
+        [ValidateNever]
         public Producto? Producto { get; set; }
 
         [ForeignKey(nameof(Usuario))]
-        public int Id_Usuario{ get; set; }
+        public int Id_Usuario { get; set; }
+
+        [ValidateNever]
         public Usuario? Usuario { get; set; }
 
         [Required]
@@ -25,7 +30,7 @@ namespace PYME.Models
         [Required(ErrorMessage = "La descripcion es obligatoria")]
         public string Descripcion { get; set; }
 
-        [Required(ErrorMessage = "El tipo de movimiento es obligatorio")]
+        [ValidateNever]
         public string Tipo_Movimiento { get; set; }
     }
 }

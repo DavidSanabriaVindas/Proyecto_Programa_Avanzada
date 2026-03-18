@@ -34,8 +34,6 @@ builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IMovimientoService, MovimientoService>();
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

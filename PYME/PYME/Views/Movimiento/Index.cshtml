@@ -1,0 +1,67 @@
+﻿@model List<PYME.Models.MovimientoInventario>
+
+@{
+    ViewData["Title"] = "Movimientos de Inventario";
+}
+
+<h2 class="mb-3">🔄 Movimientos de Inventario</h2>
+
+<div class="d-flex gap-2 mb-3">
+    <a asp-action="Entrada" class="btn btn-success">
+        ➕ Registrar Entrada
+    </a>
+    <a asp-action="Salida" class="btn btn-danger">
+        ➖ Registrar Salida
+    </a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Producto</th>
+            <th>Tipo</th>
+            <th>Cantidad</th>
+            <th>Descripción</th>
+            <th>Usuario</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mov in Model)
+        {
+            <tr>
+                <td>@mov.Fecha_Movimiento?.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@mov.Producto?.Nombre</td>
+                <td>
+                    @if (mov.Tipo_Movimiento == "ENTRADA")
+                    {
+                        <span class="badge bg-success">ENTRADA</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">SALIDA</span>
+                    }
+                </td>
+                <td>@mov.Cantidad</td>
+                <td>@mov.Descripcion</td>
+                <td>@mov.Usuario?.Username</td>
+                <td>
+                    <a asp-action="Detalle"
+                           asp-route-id="@mov.Id_Movimiento"
+                           class="btn btn-primary btn-sm">
+                        Ver detalle
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
