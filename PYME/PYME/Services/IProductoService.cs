@@ -7,8 +7,8 @@ namespace PYME.Services
         List<Producto> ObtenerTodos();
         Producto? ObtenerDetalle(int id);
 
-        bool CrearProducto(ProductoViewModel modelo);
-        bool ActualizarProducto(int id, ProductoViewModel modelo);
+        bool CrearProducto(Producto producto);
+        bool ActualizarProducto(int id, Producto producto);
         bool EliminarProducto(int id);
     }
 }
