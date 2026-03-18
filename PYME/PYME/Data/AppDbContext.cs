@@ -28,6 +28,18 @@ namespace PYME.Data
             modelBuilder.Entity<Usuario>()
                 .HasIndex(u => u.Username)
                 .IsUnique();
+
+            modelBuilder.Entity<MovimientoInventario>()
+                .HasOne(m => m.Producto)
+                .WithMany(p => p.MovimientosInvetario)
+                .HasForeignKey(m => m.Id_Producto)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<MovimientoInventario>()
+                .HasOne(m => m.Usuario)
+                .WithMany(u => u.MovimientosInvetario)
+                .HasForeignKey(m => m.Id_Usuario)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
