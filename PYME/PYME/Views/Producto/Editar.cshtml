@@ -1,0 +1,92 @@
+﻿@model PYME.Models.Producto
+
+@{
+    ViewData["Title"] = "Editar Producto";
+}
+
+<h2 class="mb-3">Editar Producto</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <h5>Por favor corrija los siguientes errores:</h5>
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<form asp-action="Editar"
+      asp-route-id="@Model.Id_Producto"
+      method="post"
+      class="row g-3">
+
+    <input type="hidden" asp-for="Id_Producto" />
+
+    <div class="col-md-4">
+        <label asp-for="SKU" class="form-label">SKU *</label>
+        <input asp-for="SKU" class="form-control" />
+        <span asp-validation-for="SKU" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-8">
+        <label asp-for="Nombre" class="form-label">Nombre *</label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-12">
+        <label asp-for="Descripcion" class="form-label">Descripción *</label>
+        <textarea asp-for="Descripcion" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Descripcion" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Precio_Costo" class="form-label">Precio Costo (₡) *</label>
+        <div class="input-group">
+            <span class="input-group-text">₡</span>
+            <input asp-for="Precio_Costo" type="number" class="form-control" />
+        </div>
+        <span asp-validation-for="Precio_Costo" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Precio_Venta" class="form-label">Precio Venta (₡) *</label>
+        <div class="input-group">
+            <span class="input-group-text">₡</span>
+            <input asp-for="Precio_Venta" type="number" class="form-control" />
+        </div>
+        <span asp-validation-for="Precio_Venta" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="Stock_Minimo" class="form-label">Stock Mínimo *</label>
+        <input asp-for="Stock_Minimo" type="number" class="form-control" />
+        <span asp-validation-for="Stock_Minimo" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-check">
+            <input asp-for="Estado" class="form-check-input" type="checkbox" />
+            <label asp-for="Estado" class="form-check-label">
+                Producto Activo
+            </label>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save"></i> Guardar cambios
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Cancelar
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
