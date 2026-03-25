@@ -14,7 +14,7 @@ namespace PYME.Binders
             var password = request.Form["Password"].ToString();
             var direccionExacta = request.Form["Direccion_Exacta"].ToString();
             var telefonoTexto = request.Form["Telefono"].ToString();
-            var correo = request.Form["Correo"].ToString();
+            var correo = request.Form["Email"].ToString();
             var idTexto = request.Form["Id"].ToString();
 
             bool estado = request.Form["Estado"].Contains("true");
@@ -43,7 +43,7 @@ namespace PYME.Binders
                 Primer_Apellido = primerApellido,
                 Segundo_Apellido = segundoApellido,
                 UserName = usernameGenerado,
-                Email = correo, 
+                Email = string.IsNullOrWhiteSpace(correo) ? null : correo,
                 Estado = estado,
                 Direccion_Exacta = string.IsNullOrWhiteSpace(direccionExacta) ? null : direccionExacta,
                 Telefono = telefono == 0 ? null : telefono

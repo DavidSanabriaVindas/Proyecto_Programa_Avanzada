@@ -40,12 +40,14 @@ namespace PYME.Services
             return user;
         }
         public async Task<(bool success, string? error)> CrearUsuarioAsync(
-            Usuario usuario, string password, string rol)
+    Usuario usuario, string password, string rol)
         {
             var existe = await _userManager.FindByNameAsync(usuario.UserName);
 
             if (existe != null)
                 return (false, "Ya existe un usuario con ese username");
+            usuario.NormalizedEmail = usuario.Email?.ToUpper();
+            usuario.NormalizedUserName = usuario.UserName?.ToUpper();
 
             var result = await _userManager.CreateAsync(usuario, password);
 
@@ -57,7 +59,7 @@ namespace PYME.Services
             return (true, null);
         }
         public async Task<(bool success, string? error)> ActualizarUsuarioAsync(
-           Usuario usuario, string rol, string? nuevaPassword)
+    Usuario usuario, string rol, string? nuevaPassword)
         {
             var existente = await _userManager.FindByIdAsync(usuario.Id.ToString());
 
@@ -72,12 +74,20 @@ namespace PYME.Services
             }
 
             existente.UserName = usuario.UserName;
-            existente.Email = usuario.Email;
+
+            if (!string.IsNullOrWhiteSpace(usuario.Email))
+                existente.Email = usuario.Email;
+
             existente.Nombre = usuario.Nombre;
             existente.Primer_Apellido = usuario.Primer_Apellido;
             existente.Segundo_Apellido = usuario.Segundo_Apellido;
-            existente.Direccion_Exacta = usuario.Direccion_Exacta;
-            existente.Telefono = usuario.Telefono;
+
+            if (!string.IsNullOrWhiteSpace(usuario.Direccion_Exacta))
+                existente.Direccion_Exacta = usuario.Direccion_Exacta;
+
+            if (usuario.Telefono.HasValue)
+                existente.Telefono = usuario.Telefono;
+
             existente.Estado = usuario.Estado;
 
             var result = await _userManager.UpdateAsync(existente);
