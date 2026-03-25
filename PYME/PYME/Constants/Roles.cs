@@ -1,0 +1,10 @@
+﻿namespace PYME.Constants
+{
+    public class Roles
+    {
+        public const string Admin = "Admin";
+        public const string Gerente = "Gerente";
+        public const string Vendedor = "Vendedor";
+        public const string Almacenista = "Almacenista";
+    }
+}

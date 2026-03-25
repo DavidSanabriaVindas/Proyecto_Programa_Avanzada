@@ -7,6 +7,7 @@ namespace PYME.Binders
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             var request = bindingContext.HttpContext.Request;
+
             var nombre = request.Form["Nombre"].ToString();
             var primerApellido = request.Form["Primer_Apellido"].ToString();
             var segundoApellido = request.Form["Segundo_Apellido"].ToString();
@@ -15,10 +16,14 @@ namespace PYME.Binders
             var telefonoTexto = request.Form["Telefono"].ToString();
             var correo = request.Form["Correo"].ToString();
             var idTexto = request.Form["Id"].ToString();
+
             bool estado = request.Form["Estado"].Contains("true");
+
             int.TryParse(telefonoTexto, out int telefono);
             int.TryParse(idTexto, out int id);
+
             string usernameGenerado;
+
             if (!string.IsNullOrWhiteSpace(nombre) &&
                 !string.IsNullOrWhiteSpace(primerApellido))
             {
@@ -30,6 +35,7 @@ namespace PYME.Binders
             {
                 usernameGenerado = Guid.NewGuid().ToString("N");
             }
+
             var usuario = new Usuario
             {
                 Id = id,
@@ -37,12 +43,14 @@ namespace PYME.Binders
                 Primer_Apellido = primerApellido,
                 Segundo_Apellido = segundoApellido,
                 UserName = usernameGenerado,
-                Password = password,
+                Email = correo, 
                 Estado = estado,
                 Direccion_Exacta = string.IsNullOrWhiteSpace(direccionExacta) ? null : direccionExacta,
-                Telefono = telefono == 0 ? null : telefono,
-                Correo = string.IsNullOrWhiteSpace(correo) ? null : correo
+                Telefono = telefono == 0 ? null : telefono
             };
+
+            bindingContext.HttpContext.Items["Password"] = password;
+
             bindingContext.Result = ModelBindingResult.Success(usuario);
             return Task.CompletedTask;
         }
