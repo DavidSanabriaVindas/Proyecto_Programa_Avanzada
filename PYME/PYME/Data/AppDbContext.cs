@@ -21,12 +21,6 @@ namespace PYME.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Usuario>()
-                .HasOne(u => u.Rol)
-                .WithMany(r => r.Usuarios)
-                .HasForeignKey(u => u.Id_Rol)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Usuario>()
              .HasIndex(u => u.UserName)
             .IsUnique();
 

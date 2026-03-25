@@ -26,6 +26,7 @@ namespace PYME.Models
         [EmailAddress(ErrorMessage = "El formato del correo no es válido")]
         public string? Correo { get; set; }
 
-        [Required(ErrorMessage = "Debe seleccionar un rol")]
+        [Required]
+        public string Rol { get; set; } 
     }
 }

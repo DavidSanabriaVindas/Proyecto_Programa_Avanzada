@@ -1,100 +1,57 @@
 ﻿@model PYME.Models.Usuario
 
-@{
-    ViewData["Title"] = "Crear Usuario";
-}
-
-<h2 class="mb-3">Crear Usuario</h2>
-
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="alert alert-danger">
-        <h5>Por favor corrija los siguientes errores:</h5>
-        <ul>
-            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-            {
-                <li>@error.ErrorMessage</li>
-            }
-        </ul>
-    </div>
-}
+<h2>Crear Usuario</h2>
 
 <form asp-action="Crear" method="post" class="row g-3">
 
-    <div class="col-md-4">
-        <label asp-for="Nombre" class="form-label">Nombre *</label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-4">
-        <label asp-for="Primer_Apellido" class="form-label">Primer Apellido *</label>
-        <input asp-for="Primer_Apellido" class="form-control" />
-        <span asp-validation-for="Primer_Apellido" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-4">
-        <label asp-for="Segundo_Apellido" class="form-label">Segundo Apellido *</label>
-        <input asp-for="Segundo_Apellido" class="form-control" />
-        <span asp-validation-for="Segundo_Apellido" class="text-danger"></span>
-    </div>
-
-
     <div class="col-md-6">
-        <label asp-for="Password" class="form-label">Contraseña *</label>
-        <input asp-for="Password" type="password" class="form-control" autocomplete="new-password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
+        <label>Username</label>
+        <input asp-for="UserName" class="form-control" />
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Id_Rol" class="form-label">Rol *</label>
-        <select asp-for="Id_Rol" class="form-select">
+        <label>Contraseña</label>
+        <input name="password" type="password" class="form-control" />
+    </div>
+
+    <div class="col-md-4">
+        <input asp-for="Nombre" class="form-control" placeholder="Nombre" />
+    </div>
+
+    <div class="col-md-4">
+        <input asp-for="Primer_Apellido" class="form-control" placeholder="Primer Apellido" />
+    </div>
+
+    <div class="col-md-4">
+        <input asp-for="Segundo_Apellido" class="form-control" placeholder="Segundo Apellido" />
+    </div>
+
+    <div class="col-md-6">
+        <label>Rol</label>
+        <select name="rol" class="form-select">
             <option value="">Seleccione un rol</option>
-            @foreach (var rol in ViewBag.Roles as List<PYME.Models.Rol>)
+            @foreach (var rol in ViewBag.Roles as List<string>)
             {
-                <option value="@rol.Id_Rol">@rol.Nombre</option>
+                <option value="@rol">@rol</option>
             }
         </select>
-        <span asp-validation-for="Id_Rol" class="text-danger"></span>
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Telefono" class="form-label">Teléfono</label>
-        <input asp-for="Telefono" type="number" class="form-control" placeholder="Ej: 88888888" />
-        <span asp-validation-for="Telefono" class="text-danger"></span>
+        <input asp-for="Email" class="form-control" placeholder="Correo" />
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Correo" class="form-label">Correo</label>
-        <input asp-for="Correo" type="email" class="form-control" placeholder="ejemplo@correo.com" />
-        <span asp-validation-for="Correo" class="text-danger"></span>
+        <input asp-for="Telefono" class="form-control" placeholder="Teléfono" />
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Direccion_Exacta" class="form-label">Dirección Exacta</label>
-        <input asp-for="Direccion_Exacta" class="form-control" placeholder="Dirección completa" />
-        <span asp-validation-for="Direccion_Exacta" class="text-danger"></span>
-    </div>
-
-    <div class="col-md-12">
-        <div class="form-check">
-            <input asp-for="Estado" class="form-check-input" type="checkbox" checked />
-            <label asp-for="Estado" class="form-check-label">
-                Usuario Activo
-            </label>
-        </div>
+        <input asp-for="Direccion_Exacta" class="form-control" placeholder="Dirección" />
     </div>
 
     <div class="col-12">
-        <button type="submit" class="btn btn-primary">
-            <i class="bi bi-save"></i> Guardar
-        </button>
-        <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Cancelar
-        </a>
+        <input asp-for="Estado" type="checkbox" /> Activo
     </div>
-</form>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    <button class="btn btn-primary">Guardar</button>
+</form>

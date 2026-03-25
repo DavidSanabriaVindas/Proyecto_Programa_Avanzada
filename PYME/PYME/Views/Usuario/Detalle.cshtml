@@ -1,38 +1,18 @@
 ﻿@model PYME.Models.Usuario
 
-@{
-    ViewData["Title"] = "Detalle del Usuario";
-}
+<h2>Detalle del Usuario</h2>
 
-<h2 class="mb-3">Detalle del Usuario</h2>
-
-<div class="card shadow" style="max-width: 800px;">
+<div class="card">
     <div class="card-body">
-        <h4 class="card-title">@Model.Nombre @Model.Primer_Apellido @Model.Segundo_Apellido</h4>
+        <p><strong>Nombre:</strong> @Model.Nombre @Model.Primer_Apellido @Model.Segundo_Apellido</p>
+        <p><strong>Username:</strong> @Model.UserName</p>
+        <p><strong>Rol:</strong> @Model.RolNombre</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Teléfono:</strong> @Model.Telefono</p>
+        <p><strong>Dirección:</strong> @Model.Direccion_Exacta</p>
+        <p><strong>Estado:</strong> @(Model.Estado ? "Activo" : "Inactivo")</p>
 
-        <p class="card-text">
-            <strong>Username:</strong> @Model.Username <br />
-            <strong>Rol:</strong> @Model.Rol?.Nombre <br />
-            <strong>Estado:</strong> 
-            @if (Model.Estado)
-            {
-                <span class="badge bg-success">Activo</span>
-            }
-            else
-            {
-                <span class="badge bg-danger">Inactivo</span>
-            }
-            <br />
-            <strong>Teléfono:</strong> @Model.Telefono <br />
-            <strong>Correo:</strong> @Model.Correo <br />
-            <strong>Dirección:</strong> @Model.Direccion_Exacta
-        </p>
-
-        <a asp-action="Index" class="btn btn-secondary">
-            Volver al listado
-        </a>
-        <a asp-action="Editar" asp-route-id="@Model.Id_Usuario" class="btn btn-warning">
-            Editar
-        </a>
+        <a asp-action="Index" class="btn btn-secondary">Volver</a>
+        <a asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
     </div>
 </div>

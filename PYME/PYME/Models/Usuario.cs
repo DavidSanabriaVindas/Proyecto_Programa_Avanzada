@@ -22,6 +22,9 @@ namespace PYME.Models
 
         public int? Telefono { get; set; }
 
+        [NotMapped]
+        public string? RolNombre { get; set; }
+
         public List<MovimientoInventario> MovimientosInvetario { get; set; } = new();
     }
 }
