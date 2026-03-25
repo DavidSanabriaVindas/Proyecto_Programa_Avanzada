@@ -1,10 +1,13 @@
-﻿using PYME.Models;
-using PYME.Services;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PYME.Constants;
+using PYME.Models;
+using PYME.Services;
 
 namespace PYME.Controllers
 {
     [Route("cliente")]
+    [Authorize(Roles = Roles.Admin)]
     public class ClienteController : Controller
     {
         private readonly IClienteService _clienteService;

@@ -12,7 +12,7 @@ using PYME.Data;
 namespace PYME.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260325062118_InitialCreate")]
+    [Migration("20260325071504_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -155,6 +155,40 @@ namespace PYME.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("PYME.Models.Cliente", b =>
+                {
+                    b.Property<int>("Id_Cliente")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id_Cliente"));
+
+                    b.Property<string>("Correo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Direccion_Exacta")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Primer_Apellido")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Segundo_Apellido")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("Telefono")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id_Cliente");
+
+                    b.ToTable("Clientes");
                 });
 
             modelBuilder.Entity("PYME.Models.MovimientoInventario", b =>
