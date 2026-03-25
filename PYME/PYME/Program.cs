@@ -47,12 +47,10 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // Registrar Repositories
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IRolRepository, RolRepository>();
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<IMovimientoRepository, MovimientoRepository>();
 // Registrar Services
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
-builder.Services.AddScoped<IRolService, RolService>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IMovimientoService, MovimientoService>();
 builder.Services.AddScoped<ICuentaService, CuentaService>();

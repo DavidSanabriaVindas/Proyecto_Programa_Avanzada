@@ -27,6 +27,5 @@ namespace PYME.Models
         public string? Correo { get; set; }
 
         [Required(ErrorMessage = "Debe seleccionar un rol")]
-        public int Id_Rol { get; set; }
     }
 }

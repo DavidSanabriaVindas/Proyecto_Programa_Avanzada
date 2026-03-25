@@ -22,9 +22,6 @@ namespace PYME.Models
 
         public int? Telefono { get; set; }
 
-        public int? Id_Rol { get; set; }
-        public Rol? Rol { get; set; }
-
         public List<MovimientoInventario> MovimientosInvetario { get; set; } = new();
     }
 }
