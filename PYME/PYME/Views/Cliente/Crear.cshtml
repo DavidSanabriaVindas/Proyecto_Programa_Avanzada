@@ -1,0 +1,70 @@
+﻿@model PYME.Models.Cliente
+
+@{
+    ViewData["Title"] = "Crear Cliente";
+}
+
+<h2 class="mb-3">Crear Cliente</h2>
+
+@if (!ViewData.ModelState.IsValid && ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div class="alert alert-danger">
+        <h5>Por favor corrija los siguientes errores:</h5>
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+@using (Html.BeginForm("Crear", "Cliente", FormMethod.Post, new { @class = "row g-3" }))
+{
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Nombre, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control", placeholder = "Nombre" })
+        @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Primer_Apellido, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Primer_Apellido, new { @class = "form-control", placeholder = "Primer apellido" })
+        @Html.ValidationMessageFor(m => m.Primer_Apellido, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Segundo_Apellido, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Segundo_Apellido, new { @class = "form-control", placeholder = "Segundo apellido" })
+        @Html.ValidationMessageFor(m => m.Segundo_Apellido, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Telefono, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", type = "number", placeholder = "Ej: 88888888" })
+        @Html.ValidationMessageFor(m => m.Telefono, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.Correo, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Correo, new { @class = "form-control", type = "email", placeholder = "ejemplo@correo.com" })
+        @Html.ValidationMessageFor(m => m.Correo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.Direccion_Exacta, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Direccion_Exacta, new { @class = "form-control", placeholder = "Dirección completa" })
+        @Html.ValidationMessageFor(m => m.Direccion_Exacta, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save"></i> Guardar
+        </button>
+        @Html.ActionLink("Cancelar", "Index", "Cliente", null, new { @class = "btn btn-secondary" })
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
