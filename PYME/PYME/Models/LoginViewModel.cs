@@ -4,10 +4,9 @@ namespace PYME.Models
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "El correo es obligatorio")]
-        [EmailAddress(ErrorMessage = "Correo inválido")]
-        [Display(Name = "Correo electrónico")]
-        public string Correo { get; set; }
+        [Required(ErrorMessage = "El usuario es obligatorio")]
+        [Display(Name = "Usuario")]
+        public string Username { get; set; }
 
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         [DataType(DataType.Password)]

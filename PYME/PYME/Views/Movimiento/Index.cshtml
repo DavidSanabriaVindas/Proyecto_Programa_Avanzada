@@ -1,6 +1,14 @@
 ﻿@model List<PYME.Models.MovimientoInventario>
-
 <h2>Movimientos</h2>
+
+<div class="mb-3">
+    <a asp-action="Entrada" asp-controller="Movimiento" class="btn btn-success me-2">
+        <i class="bi bi-box-arrow-in-down"></i> Entrada
+    </a>
+    <a asp-action="Salida" asp-controller="Movimiento" class="btn btn-danger">
+        <i class="bi bi-box-arrow-up"></i> Salida
+    </a>
+</div>
 
 <table class="table">
     <thead>
@@ -21,9 +29,10 @@
                 <td>@mov.Tipo_Movimiento</td>
                 <td>@mov.Usuario?.UserName</td>
                 <td>
-                    <a asp-action="Detalle" asp-route-id="@mov.Id_Movimiento">Ver</a>
+                    <a asp-action="Detalle" asp-controller="Movimiento" asp-route-id="@mov.Id_Movimiento" class="btn btn-sm btn-info">Ver</a>
                 </td>
             </tr>
         }
     </tbody>
+</table>
 </table>

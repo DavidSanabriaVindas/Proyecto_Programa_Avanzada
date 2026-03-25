@@ -1,10 +1,14 @@
-﻿using PYME.Models;
-using PYME.Services;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PYME.Constants;
+using PYME.Models;
+using PYME.Services;
 
 namespace PYME.Controllers
 {
+    [Authorize]
     [Route("producto")]
+    [Authorize(Roles = Roles.Admin)]
     public class ProductoController : Controller
     {
         private readonly IProductoService _productoService;

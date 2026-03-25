@@ -1,10 +1,14 @@
-﻿using PYME.Models;
-using PYME.Services;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PYME.Constants;
+using PYME.Models;
+using PYME.Services;
 
 namespace PYME.Controllers
 {
+
     [Route("movimiento")]
+    [Authorize(Roles = "Admin,Almacenista")]
     public class MovimientoController : Controller
     {
         private readonly IMovimientoService _movimientoService;
@@ -29,11 +33,14 @@ namespace PYME.Controllers
         }
 
         [HttpGet("detalle/{id:int}")]
-        public IActionResult Detalle(int id)
+        public async Task<IActionResult> Detalle(int id)
         {
             var movimiento = _movimientoService.ObtenerDetalle(id);
             if (movimiento == null)
                 return NotFound();
+            ViewBag.Productos = _productoService.ObtenerTodos();
+            ViewBag.Usuarios = await _usuarioService.ObtenerTodosAsync();
+
             return View(movimiento);
         }
 
