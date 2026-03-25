@@ -19,56 +19,48 @@
     </div>
 }
 
-<form asp-action="Salida" method="post" class="row g-3" style="max-width: 700px;">
-
+@using (Html.BeginForm("Salida", "Movimiento", FormMethod.Post, new { @class = "row g-3", style = "max-width: 700px;" }))
+{
     <div class="col-md-12">
-        <label asp-for="Id_Producto" class="form-label">Producto *</label>
-        <select asp-for="Id_Producto" class="form-select">
-            <option value="">Seleccione un producto</option>
-            @foreach (var p in ViewBag.Productos as List<PYME.Models.Producto>)
-            {
-                <option value="@p.Id_Producto">@p.Nombre (SKU: @p.SKU — Stock: @p.Stock_Actual)</option>
-            }
-        </select>
-        <span asp-validation-for="Id_Producto" class="text-danger"></span>
+        @Html.LabelFor(m => m.Id_Producto, "Producto *", new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.Id_Producto,
+            new SelectList(ViewBag.Productos as List<PYME.Models.Producto>, "Id_Producto", "Nombre"),
+            "Seleccione un producto",
+            new { @class = "form-select" })
+        @Html.ValidationMessageFor(m => m.Id_Producto, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-12">
-        <label asp-for="Id_Usuario" class="form-label">Usuario *</label>
-        <select asp-for="Id_Usuario" class="form-select">
-            <option value="">Seleccione un usuario</option>
-            @foreach (var u in ViewBag.Usuarios as List<PYME.Models.Usuario>)
-            {
-                <option value="@u.Id_Usuario">@u.Nombre @u.Primer_Apellido — @u.Username</option>
-            }
-        </select>
-        <span asp-validation-for="Id_Usuario" class="text-danger"></span>
+        @Html.LabelFor(m => m.Id_Usuario, "Usuario *", new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.Id_Usuario,
+            new SelectList(ViewBag.Usuarios as List<PYME.Models.Usuario>, "Id_Usuario", "Username"),
+            "Seleccione un usuario",
+            new { @class = "form-select" })
+        @Html.ValidationMessageFor(m => m.Id_Usuario, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Cantidad" class="form-label">Cantidad *</label>
-        <input asp-for="Cantidad" type="number" class="form-control" min="1" />
-        <span asp-validation-for="Cantidad" class="text-danger"></span>
+        @Html.LabelFor(m => m.Cantidad, "Cantidad *", new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control", type = "number", min = "1" })
+        @Html.ValidationMessageFor(m => m.Cantidad, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Descripcion" class="form-label">Descripción *</label>
-        <select asp-for="Descripcion" class="form-select"
-                asp-items="ViewBag.Descripciones">
-            <option value="">Seleccione una descripción</option>
-        </select>
-        <span asp-validation-for="Descripcion" class="text-danger"></span>
+        @Html.LabelFor(m => m.Descripcion, "Descripción *", new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.Descripcion,
+            ViewBag.Descripciones as List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem>,
+            "Seleccione una descripción",
+            new { @class = "form-select" })
+        @Html.ValidationMessageFor(m => m.Descripcion, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-12">
         <button type="submit" class="btn btn-danger">
             <i class="bi bi-dash-circle"></i> Registrar Salida
         </button>
-        <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Cancelar
-        </a>
+        @Html.ActionLink("Cancelar", "Index", "Movimiento", null, new { @class = "btn btn-secondary" })
     </div>
-</form>
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

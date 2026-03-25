@@ -6,7 +6,7 @@
 
 <h2 class="mb-3">Editar Usuario</h2>
 
-@if (!ViewData.ModelState.IsValid)
+@if (!ViewData.ModelState.IsValid && ViewContext.HttpContext.Request.Method == "POST")
 {
     <div class="alert alert-danger">
         <h5>Por favor corrija los siguientes errores:</h5>
@@ -19,77 +19,66 @@
     </div>
 }
 
-<form asp-action="Editar"
-      asp-route-id="@Model.Id_Usuario"
-      method="post"
-      class="row g-3">
-
-    <input type="hidden" asp-for="Id_Usuario" />
+@using (Html.BeginForm("Editar", "Usuario", new { id = Model.Id_Usuario }, FormMethod.Post, null, new { @class = "row g-3" }))
+{
+    @Html.HiddenFor(m => m.Id_Usuario)
 
     <div class="col-md-4">
-        <label asp-for="Nombre" class="form-label">Nombre *</label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+        @Html.LabelFor(m => m.Nombre, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-4">
-        <label asp-for="Primer_Apellido" class="form-label">Primer Apellido *</label>
-        <input asp-for="Primer_Apellido" class="form-control" />
-        <span asp-validation-for="Primer_Apellido" class="text-danger"></span>
+        @Html.LabelFor(m => m.Primer_Apellido, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Primer_Apellido, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Primer_Apellido, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-4">
-        <label asp-for="Segundo_Apellido" class="form-label">Segundo Apellido *</label>
-        <input asp-for="Segundo_Apellido" class="form-control" />
-        <span asp-validation-for="Segundo_Apellido" class="text-danger"></span>
-    </div>
-
-
-    <div class="col-md-6">
-        <label asp-for="Password" class="form-label">Contraseña *</label>
-        <input asp-for="Password" type="password" class="form-control" autocomplete="new-password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-        <small class="form-text text-muted">
-            Dejar la contraseña actual o ingresar una nueva
-        </small>
+        @Html.LabelFor(m => m.Segundo_Apellido, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Segundo_Apellido, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Segundo_Apellido, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Id_Rol" class="form-label">Rol *</label>
-        <select asp-for="Id_Rol" class="form-select">
-            <option value="">Seleccione un rol</option>
-            @foreach (var rol in ViewBag.Roles as List<PYME.Models.Rol>)
-            {
-                <option value="@rol.Id_Rol">@rol.Nombre</option>
-            }
-        </select>
-        <span asp-validation-for="Id_Rol" class="text-danger"></span>
+        @Html.LabelFor(m => m.Password, new { @class = "form-label" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", autocomplete = "new-password" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        <small class="form-text text-muted">Dejar la contraseña actual o ingresar una nueva</small>
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Telefono" class="form-label">Teléfono</label>
-        <input asp-for="Telefono" type="number" class="form-control" />
-        <span asp-validation-for="Telefono" class="text-danger"></span>
+        @Html.LabelFor(m => m.Id_Rol, new { @class = "form-label" })
+        @Html.DropDownListFor(m => m.Id_Rol,
+            new SelectList(ViewBag.Roles as List<PYME.Models.Rol>, "Id_Rol", "Nombre"),
+            "Seleccione un rol",
+            new { @class = "form-select" })
+        @Html.ValidationMessageFor(m => m.Id_Rol, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Correo" class="form-label">Correo</label>
-        <input asp-for="Correo" type="email" class="form-control" />
-        <span asp-validation-for="Correo" class="text-danger"></span>
+        @Html.LabelFor(m => m.Telefono, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", type = "number" })
+        @Html.ValidationMessageFor(m => m.Telefono, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Direccion_Exacta" class="form-label">Dirección Exacta</label>
-        <input asp-for="Direccion_Exacta" class="form-control" />
-        <span asp-validation-for="Direccion_Exacta" class="text-danger"></span>
+        @Html.LabelFor(m => m.Correo, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Correo, new { @class = "form-control", type = "email" })
+        @Html.ValidationMessageFor(m => m.Correo, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-12">
+        @Html.LabelFor(m => m.Direccion_Exacta, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Direccion_Exacta, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Direccion_Exacta, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-12">
         <div class="form-check">
-            <input asp-for="Estado" class="form-check-input" type="checkbox" />
-            <label asp-for="Estado" class="form-check-label">
-                Usuario Activo
-            </label>
+            @Html.CheckBoxFor(m => m.Estado, new { @class = "form-check-input" })
+            @Html.LabelFor(m => m.Estado, "Usuario Activo", new { @class = "form-check-label" })
         </div>
     </div>
 
@@ -97,11 +86,9 @@
         <button type="submit" class="btn btn-primary">
             <i class="bi bi-save"></i> Guardar cambios
         </button>
-        <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Cancelar
-        </a>
+        @Html.ActionLink("Cancelar", "Index", "Usuario", null, new { @class = "btn btn-secondary" })
     </div>
-</form>
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

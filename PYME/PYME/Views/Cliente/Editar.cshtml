@@ -19,58 +19,53 @@
     </div>
 }
 
-<form asp-action="Editar"
-      asp-route-id="@Model.Id_Cliente"
-      method="post"
-      class="row g-3">
-
-    <input type="hidden" asp-for="Id_Cliente" />
+@using (Html.BeginForm("Editar", "Cliente", new { id = Model.Id_Cliente }, FormMethod.Post, null, new { @class = "row g-3" }))
+{
+    @Html.HiddenFor(m => m.Id_Cliente)
 
     <div class="col-md-4">
-        <label asp-for="Nombre" class="form-label">Nombre *</label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
+        @Html.LabelFor(m => m.Nombre, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-4">
-        <label asp-for="Primer_Apellido" class="form-label">Primer Apellido *</label>
-        <input asp-for="Primer_Apellido" class="form-control" />
-        <span asp-validation-for="Primer_Apellido" class="text-danger"></span>
+        @Html.LabelFor(m => m.Primer_Apellido, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Primer_Apellido, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Primer_Apellido, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-4">
-        <label asp-for="Segundo_Apellido" class="form-label">Segundo Apellido *</label>
-        <input asp-for="Segundo_Apellido" class="form-control" />
-        <span asp-validation-for="Segundo_Apellido" class="text-danger"></span>
+        @Html.LabelFor(m => m.Segundo_Apellido, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Segundo_Apellido, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Segundo_Apellido, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Telefono" class="form-label">Teléfono</label>
-        <input asp-for="Telefono" type="number" class="form-control" />
-        <span asp-validation-for="Telefono" class="text-danger"></span>
+        @Html.LabelFor(m => m.Telefono, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", type = "number" })
+        @Html.ValidationMessageFor(m => m.Telefono, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <label asp-for="Correo" class="form-label">Correo</label>
-        <input asp-for="Correo" type="email" class="form-control" />
-        <span asp-validation-for="Correo" class="text-danger"></span>
+        @Html.LabelFor(m => m.Correo, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Correo, new { @class = "form-control", type = "email" })
+        @Html.ValidationMessageFor(m => m.Correo, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-12">
-        <label asp-for="Direccion_Exacta" class="form-label">Dirección Exacta</label>
-        <input asp-for="Direccion_Exacta" class="form-control" />
-        <span asp-validation-for="Direccion_Exacta" class="text-danger"></span>
+        @Html.LabelFor(m => m.Direccion_Exacta, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Direccion_Exacta, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Direccion_Exacta, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-12">
         <button type="submit" class="btn btn-primary">
             <i class="bi bi-save"></i> Guardar cambios
         </button>
-        <a asp-action="Index" class="btn btn-secondary">
-            <i class="bi bi-arrow-left"></i> Cancelar
-        </a>
+        @Html.ActionLink("Cancelar", "Index", "Cliente", null, new { @class = "btn btn-secondary" })
     </div>
-</form>
+}
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
