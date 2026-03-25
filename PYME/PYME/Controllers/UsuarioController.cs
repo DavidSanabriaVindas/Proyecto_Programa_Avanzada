@@ -13,18 +13,20 @@ namespace PYME.Controllers
             _usuarioService = usuarioService;
         }
         [HttpGet("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var usuarios = _usuarioService.ObtenerTodos();
+            var usuarios = await _usuarioService.ObtenerTodosAsync();
             return View(usuarios);
         }
 
         [HttpGet("detalle/{id:int}")]
-        public IActionResult Detalle(int id)
+        public async Task<IActionResult> Detalle(int id)
         {
-            var usuario = _usuarioService.ObtenerDetalle(id);
+            var usuario = await _usuarioService.ObtenerDetalleAsync(id);
+
             if (usuario == null)
                 return NotFound();
+
             return View(usuario);
         }
 
@@ -58,9 +60,9 @@ namespace PYME.Controllers
         }
 
         [HttpGet("editar/{id:int}")]
-        public IActionResult Editar(int id)
+        public async Task<IActionResult> Editar(int id)
         {
-            var usuario = _usuarioService.ObtenerDetalle(id);
+            var usuario = await _usuarioService.ObtenerDetalleAsync(id);
 
             if (usuario == null)
                 return NotFound();

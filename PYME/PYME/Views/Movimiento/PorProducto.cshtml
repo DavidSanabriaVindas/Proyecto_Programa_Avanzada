@@ -1,61 +1,23 @@
 ﻿@model List<PYME.Models.MovimientoInventario>
 
-@{
-    ViewData["Title"] = "Movimientos por Producto";
-    var producto = ViewBag.Producto as PYME.Models.Producto;
-}
+<h2>Movimientos por producto</h2>
 
-<h2 class="mb-1">📦 Movimientos de: @producto?.Nombre</h2>
-<p class="text-muted mb-3">SKU: @producto?.SKU</p>
-
-<a asp-action="Index" class="btn btn-secondary mb-3">
-    ← Volver al listado
-</a>
-
-@if (!Model.Any())
-{
-    <div class="alert alert-info">No hay movimientos registrados para este producto.</div>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Tipo</th>
+            <th>Usuario</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var mov in Model)
+        {
             <tr>
-                <th>Fecha</th>
-                <th>Tipo</th>
-                <th>Cantidad</th>
-                <th>Descripción</th>
-                <th>Usuario</th>
-                <th></th>
+                <td>@mov.Fecha_Movimiento</td>
+                <td>@mov.Tipo_Movimiento</td>
+                <td>@mov.Usuario?.UserName</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var mov in Model)
-            {
-                <tr>
-                    <td>@mov.Fecha_Movimiento?.ToString("dd/MM/yyyy HH:mm")</td>
-                    <td>
-                        @if (mov.Tipo_Movimiento == "ENTRADA")
-                        {
-                            <span class="badge bg-success">ENTRADA</span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-danger">SALIDA</span>
-                        }
-                    </td>
-                    <td>@mov.Cantidad</td>
-                    <td>@mov.Descripcion</td>
-                    <td>@mov.Usuario?.Username</td>
-                    <td>
-                        <a asp-action="Detalle"
-                               asp-route-id="@mov.Id_Movimiento"
-                               class="btn btn-primary btn-sm">
-                            Ver detalle
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        }
+    </tbody>
+</table>

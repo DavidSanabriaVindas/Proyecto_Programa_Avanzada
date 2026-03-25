@@ -49,32 +49,36 @@ namespace PYME.Controllers
             return View(movimientos);
         }
 
+ 
         [HttpGet("entrada")]
-        public IActionResult Entrada()
+        public async Task<IActionResult> Entrada()
         {
             ViewBag.Productos = _productoService.ObtenerTodos();
-            ViewBag.Usuarios = _usuarioService.ObtenerTodos();
+            ViewBag.Usuarios = await _usuarioService.ObtenerTodosAsync();
             ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesEntrada();
+
             return View(new MovimientoInventario());
         }
 
+   
         [HttpPost("entrada")]
-        public IActionResult Entrada(MovimientoInventario movimiento)
+        public async Task<IActionResult> Entrada(MovimientoInventario movimiento)
         {
             if (!ModelState.IsValid)
             {
                 ViewBag.Productos = _productoService.ObtenerTodos();
-                ViewBag.Usuarios = _usuarioService.ObtenerTodos();
+                ViewBag.Usuarios = await _usuarioService.ObtenerTodosAsync();
                 ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesEntrada();
                 return View(movimiento);
             }
 
             var (success, mensaje) = _movimientoService.RegistrarEntrada(movimiento);
+
             if (!success)
             {
                 ModelState.AddModelError("", mensaje);
                 ViewBag.Productos = _productoService.ObtenerTodos();
-                ViewBag.Usuarios = _usuarioService.ObtenerTodos();
+                ViewBag.Usuarios = await _usuarioService.ObtenerTodosAsync();
                 ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesEntrada();
                 return View(movimiento);
             }
@@ -84,31 +88,34 @@ namespace PYME.Controllers
         }
 
         [HttpGet("salida")]
-        public IActionResult Salida()
+        public async Task<IActionResult> Salida()
         {
             ViewBag.Productos = _productoService.ObtenerTodos();
-            ViewBag.Usuarios = _usuarioService.ObtenerTodos();
+            ViewBag.Usuarios = await _usuarioService.ObtenerTodosAsync();
             ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesSalida();
+
             return View(new MovimientoInventario());
         }
 
+      
         [HttpPost("salida")]
-        public IActionResult Salida(MovimientoInventario movimiento)
+        public async Task<IActionResult> Salida(MovimientoInventario movimiento)
         {
             if (!ModelState.IsValid)
             {
                 ViewBag.Productos = _productoService.ObtenerTodos();
-                ViewBag.Usuarios = _usuarioService.ObtenerTodos();
+                ViewBag.Usuarios = await _usuarioService.ObtenerTodosAsync();
                 ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesSalida();
                 return View(movimiento);
             }
 
             var (success, mensaje) = _movimientoService.RegistrarSalida(movimiento);
+
             if (!success)
             {
                 ModelState.AddModelError("", mensaje);
                 ViewBag.Productos = _productoService.ObtenerTodos();
-                ViewBag.Usuarios = _usuarioService.ObtenerTodos();
+                ViewBag.Usuarios = await _usuarioService.ObtenerTodosAsync();
                 ViewBag.Descripciones = _movimientoService.ObtenerDescripcionesSalida();
                 return View(movimiento);
             }
