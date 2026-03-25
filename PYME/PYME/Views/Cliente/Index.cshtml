@@ -1,0 +1,55 @@
+﻿@model List<PYME.Models.Cliente>
+
+@{
+    ViewData["Title"] = "Clientes";
+}
+
+<h2 class="mb-3">👤 Gestión de Clientes</h2>
+
+<a asp-action="Crear" class="btn btn-success mb-3">
+    ➕ Registrar nuevo cliente
+</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre Completo</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Dirección</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cliente in Model)
+        {
+            <tr>
+                <td>@cliente.Nombre @cliente.Primer_Apellido @cliente.Segundo_Apellido</td>
+                <td>@cliente.Telefono</td>
+                <td>@cliente.Correo</td>
+                <td>@cliente.Direccion_Exacta</td>
+                <td>
+                    <a asp-action="Detalle"
+                           asp-route-id="@cliente.Id_Cliente"
+                           class="btn btn-primary btn-sm">
+                        Ver detalle
+                    </a>
+                    <a asp-action="Editar"
+                           asp-route-id="@cliente.Id_Cliente"
+                           class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+                    <form asp-action="Eliminar"
+                          asp-route-id="@cliente.Id_Cliente"
+                          method="post"
+                          style="display:inline;"
+                          onsubmit="return confirm('¿Está seguro de eliminar este cliente?');">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

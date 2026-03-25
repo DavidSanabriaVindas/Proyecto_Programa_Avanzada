@@ -22,6 +22,40 @@ namespace PYME.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
+            modelBuilder.Entity("PYME.Models.Cliente", b =>
+                {
+                    b.Property<int>("Id_Cliente")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id_Cliente"));
+
+                    b.Property<string>("Correo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Direccion_Exacta")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Primer_Apellido")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Segundo_Apellido")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("Telefono")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id_Cliente");
+
+                    b.ToTable("Clientes");
+                });
+
             modelBuilder.Entity("PYME.Models.MovimientoInventario", b =>
                 {
                     b.Property<int>("Id_Movimiento")

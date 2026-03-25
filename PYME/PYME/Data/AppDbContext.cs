@@ -13,6 +13,8 @@ namespace PYME.Data
 
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
+
         public DbSet<Producto> Productos { get; set; }
         public DbSet<MovimientoInventario> Movimientos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
