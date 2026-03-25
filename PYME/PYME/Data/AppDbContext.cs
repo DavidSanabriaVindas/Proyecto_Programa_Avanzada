@@ -1,35 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PYME.Models;
-using System.Reflection.Emit;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
 
 namespace PYME.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<Usuario, IdentityRole<int>, int>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
            : base(options)
         {
         }
 
-        public DbSet<Rol> Roles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Cliente> Clientes { get; set; }
-
         public DbSet<Producto> Productos { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
         public DbSet<MovimientoInventario> Movimientos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Usuario>()
-                .HasOne(u => u.Rol)
-                .WithMany(r => r.Usuarios)
-                .HasForeignKey(u => u.Id_Rol)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Usuario>()
-                .HasIndex(u => u.Username)
-                .IsUnique();
+             .HasIndex(u => u.UserName)
+            .IsUnique();
 
             modelBuilder.Entity<MovimientoInventario>()
                 .HasOne(m => m.Producto)
