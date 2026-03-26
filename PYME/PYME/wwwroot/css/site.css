@@ -1,31 +1,450 @@
+/* =============================================
+   PYME Sistema de Gestión - site.css
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Lora:wght@600&display=swap');
+
+/* === Variables === */
+:root {
+    --pyme-primary: #1B4F72;
+    --pyme-primary-dk: #154360;
+    --pyme-primary-lt: #D6EAF8;
+    --pyme-accent: #E67E22;
+    --pyme-accent-dk: #CA6F1E;
+    --pyme-success: #1E8449;
+    --pyme-success-lt: #D5F5E3;
+    --pyme-danger: #922B21;
+    --pyme-danger-lt: #FADBD8;
+    --pyme-warning: #B7770D;
+    --pyme-warning-lt: #FEF9E7;
+    --pyme-gray-100: #F4F6F8;
+    --pyme-gray-200: #E8ECF0;
+    --pyme-gray-400: #AAB4BE;
+    --pyme-gray-700: #4A5568;
+    --pyme-gray-900: #1A202C;
+    --pyme-radius: 10px;
+    --pyme-radius-lg: 16px;
+    --pyme-shadow: 0 2px 12px rgba(27,79,114,0.09);
+    --pyme-shadow-lg: 0 6px 24px rgba(27,79,114,0.14);
+}
+
+/* === Base === */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Nunito', sans-serif;
+    background-color: var(--pyme-gray-100);
+    color: var(--pyme-gray-900);
+    margin-bottom: 60px;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lora', serif;
+    color: var(--pyme-primary-dk);
+    font-weight: 600;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* === Navbar === */
+.navbar {
+    background: var(--pyme-primary) !important;
+    box-shadow: 0 2px 8px rgba(27,79,114,0.18);
+    padding: 0.75rem 1.25rem;
+}
+
+.navbar-brand {
+    font-family: 'Lora', serif;
+    font-size: 1.3rem;
+    color: #fff !important;
+    letter-spacing: 0.3px;
+}
+
+    .navbar-brand::before {
+        content: '🏢 ';
+    }
+
+.navbar .nav-link {
+    color: rgba(255,255,255,0.85) !important;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 0.45rem 0.9rem !important;
+    border-radius: 6px;
+    transition: background 0.18s, color 0.18s;
+}
+
+    .navbar .nav-link:hover,
+    .navbar .nav-link.active {
+        background: rgba(255,255,255,0.15);
+        color: #fff !important;
+    }
+
+.navbar-toggler {
+    border-color: rgba(255,255,255,0.4);
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* === Layout principal === */
+.container, .container-fluid {
+    padding-top: 1.5rem;
+}
+
+/* === Cards === */
+.card {
+    border: none;
+    border-radius: var(--pyme-radius-lg);
+    box-shadow: var(--pyme-shadow);
+    background: #fff;
+}
+
+.card-header {
+    background: var(--pyme-primary);
+    color: #fff;
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: var(--pyme-radius-lg) var(--pyme-radius-lg) 0 0 !important;
+    padding: 0.85rem 1.25rem;
+    border-bottom: none;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card.shadow {
+    box-shadow: var(--pyme-shadow-lg) !important;
+}
+
+/* === Tablas === */
+.table {
+    background: #fff;
+    border-radius: var(--pyme-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--pyme-shadow);
+    font-size: 0.93rem;
+}
+
+    .table thead {
+        background: var(--pyme-primary);
+        color: #fff;
+    }
+
+        .table thead th {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: none;
+            padding: 0.85rem 1rem;
+            color: #fff;
+        }
+
+    .table tbody tr {
+        transition: background 0.15s;
+        border-bottom: 1px solid var(--pyme-gray-200);
+    }
+
+        .table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: var(--pyme-gray-100);
+}
+
+.table tbody tr:hover > * {
+    background-color: var(--pyme-primary-lt) !important;
+    color: var(--pyme-primary-dk);
+}
+
+.table td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+    border: none;
+}
+
+/* === Botones === */
+.btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    border-radius: var(--pyme-radius);
+    font-size: 0.88rem;
+    padding: 0.45rem 1.1rem;
+    transition: all 0.18s ease;
+    letter-spacing: 0.2px;
+}
+
+    .btn:focus, .btn:active:focus,
+    .btn-link.nav-link:focus,
+    .form-control:focus,
+    .form-check-input:focus {
+        box-shadow: 0 0 0 0.18rem rgba(27,79,114,0.25);
+    }
+
+.btn-primary {
+    background-color: var(--pyme-primary);
+    border-color: var(--pyme-primary);
+    color: #fff;
+}
+
+    .btn-primary:hover {
+        background-color: var(--pyme-primary-dk);
+        border-color: var(--pyme-primary-dk);
+    }
+
+.btn-success {
+    background-color: var(--pyme-success);
+    border-color: var(--pyme-success);
+    color: #fff;
+}
+
+    .btn-success:hover {
+        background-color: #176339;
+        border-color: #176339;
+    }
+
+.btn-warning {
+    background-color: var(--pyme-accent);
+    border-color: var(--pyme-accent);
+    color: #fff;
+}
+
+    .btn-warning:hover {
+        background-color: var(--pyme-accent-dk);
+        border-color: var(--pyme-accent-dk);
+        color: #fff;
+    }
+
+.btn-danger {
+    background-color: var(--pyme-danger);
+    border-color: var(--pyme-danger);
+    color: #fff;
+}
+
+    .btn-danger:hover {
+        background-color: #7B241C;
+        border-color: #7B241C;
+    }
+
+.btn-secondary {
+    background-color: var(--pyme-gray-400);
+    border-color: var(--pyme-gray-400);
+    color: #fff;
+}
+
+    .btn-secondary:hover {
+        background-color: #8899A6;
+        border-color: #8899A6;
+    }
+
+.btn-dark {
+    background-color: var(--pyme-gray-900);
+    border-color: var(--pyme-gray-900);
+    color: #fff;
+}
+
+    .btn-dark:hover {
+        background-color: #2D3748;
+        border-color: #2D3748;
+    }
+
+.btn-sm {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 7px;
+}
+
+.btn-lg {
+    padding: 0.7rem 1.8rem;
+    font-size: 1rem;
+    border-radius: var(--pyme-radius-lg);
+}
+
+/* === Formularios === */
+.form-label {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--pyme-gray-700);
+    margin-bottom: 0.3rem;
+}
+
+.form-control,
+.form-select {
+    border-radius: var(--pyme-radius);
+    border: 1.5px solid var(--pyme-gray-200);
+    font-size: 0.93rem;
+    padding: 0.52rem 0.85rem;
+    color: var(--pyme-gray-900);
+    background-color: #fff;
+    transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--pyme-primary);
+        box-shadow: 0 0 0 0.18rem var(--pyme-primary-lt);
+        outline: none;
+    }
+
+    .form-control::placeholder {
+        color: var(--pyme-gray-400);
+        font-size: 0.87rem;
+    }
+
+.row.g-3 {
+    background: #fff;
+    border-radius: var(--pyme-radius-lg);
+    box-shadow: var(--pyme-shadow-lg);
+    padding: 1.75rem 1.5rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+/* === Alertas y validación === */
+.alert {
+    border-radius: var(--pyme-radius);
+    font-size: 0.92rem;
+    border: none;
+    font-weight: 500;
+}
+
+.alert-danger {
+    background-color: var(--pyme-danger-lt);
+    color: var(--pyme-danger);
+}
+
+.alert-success {
+    background-color: var(--pyme-success-lt);
+    color: var(--pyme-success);
+}
+
+.alert-warning {
+    background-color: var(--pyme-warning-lt);
+    color: var(--pyme-warning);
+}
+
+.text-danger {
+    color: var(--pyme-danger) !important;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* === Badges === */
+.badge {
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    padding: 0.35em 0.7em;
+}
+
+.bg-success {
+    background-color: var(--pyme-success) !important;
+}
+
+.bg-danger {
+    background-color: var(--pyme-danger) !important;
+}
+
+/* === Página de inicio === */
+.text-center.mt-5 h1 {
+    font-size: 2rem;
+    color: var(--pyme-primary-dk);
+}
+
+.text-center.mt-5 p.text-muted {
+    font-size: 1rem;
+    color: var(--pyme-gray-400) !important;
+}
+
+.d-flex.gap-4 .btn {
+    min-width: 130px;
+    box-shadow: var(--pyme-shadow);
+}
+
+/* === Detalle card === */
+.card .card-title {
+    font-size: 1.3rem;
+    color: var(--pyme-primary-dk);
+}
+
+.card-text strong {
+    color: var(--pyme-gray-700);
+    font-weight: 700;
+}
+
+.card hr {
+    border-color: var(--pyme-gray-200);
+    margin: 1rem 0;
+}
+
+.card h5 {
+    font-size: 1rem;
+    color: var(--pyme-primary);
+}
+
+/* === Acceso denegado === */
+.bi-shield-lock-fill {
+    color: var(--pyme-danger) !important;
+}
+
+/* === Login card === */
+.card.shadow-sm {
+    box-shadow: var(--pyme-shadow-lg) !important;
+    border-radius: var(--pyme-radius-lg);
+}
+
+.card-title.text-center {
+    font-size: 1.4rem;
+    color: var(--pyme-primary-dk);
+}
+
+/* === Footer === */
+.footer {
+    background: var(--pyme-primary);
+    color: rgba(255,255,255,0.75);
+    font-size: 0.82rem;
+    padding: 0.9rem 0;
+    text-align: center;
+}
+
+/* === Utilidades === */
+.text-muted {
+    color: var(--pyme-gray-400) !important;
+}
+
+a {
+    color: var(--pyme-primary);
+    text-decoration: none;
+}
+
+    a:hover {
+        color: var(--pyme-accent);
+        text-decoration: underline;
+    }
+
+hr {
+    border-color: var(--pyme-gray-200);
+}
+
+/* === form-floating placeholder fix (original) === */
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--pyme-gray-400);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
 }
