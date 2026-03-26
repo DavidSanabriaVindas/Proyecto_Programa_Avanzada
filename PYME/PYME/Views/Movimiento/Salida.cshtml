@@ -1,36 +1,72 @@
 ﻿@model PYME.Models.MovimientoInventario
 
+@{
+    ViewData["Title"] = "Registrar Salida";
+}
+
 <h2 class="mb-3">➖ Registrar Salida</h2>
 
-<form asp-action="Salida" method="post" class="row g-3">
-
-    <div class="col-md-12">
-        <label asp-for="Id_Producto" class="form-label">Producto</label>
-        <select asp-for="Id_Producto" class="form-select">
-            @foreach (var p in ViewBag.Productos)
+@if (!ViewData.ModelState.IsValid && ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div class="alert alert-danger">
+        <h5>Por favor corrija los siguientes errores:</h5>
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
             {
-                <option value="@p.Id_Producto">@p.Nombre</option>
+                <li>@error.ErrorMessage</li>
             }
-        </select>
+        </ul>
     </div>
+}
 
+@using (Html.BeginForm("Salida", "Movimiento", FormMethod.Post, new { @class = "row g-3" }))
+{
     <div class="col-md-12">
-        <label asp-for="Id_Usuario" class="form-label">Usuario</label>
-        <select asp-for="Id_Usuario" class="form-select">
-            @foreach (var u in ViewBag.Usuarios)
-            {
-                <option value="@u.Id">@u.Nombre @u.Primer_Apellido - @u.UserName</option>
-            }
-        </select>
-    </div>
+        @Html.LabelFor(m => m.Id_Producto, "Producto", new { @class = "form-label" })
+        @Html.DropDownListFor(
+        m => m.Id_Producto,
+        new SelectList(ViewBag.Productos, "Id_Producto", "Nombre"),
+                        "Seleccione un producto",
+        new { @class = "form-select" }
+        )
+    @Html.ValidationMessageFor(m => m.Id_Producto, "", new { @class = "text-danger" })
+</div>
 
-    <div class="col-md-6">
-        <input asp-for="Cantidad" class="form-control" />
-    </div>
+<div class="col-md-12">
+    @Html.LabelFor(m => m.Id_Usuario, "Usuario", new { @class = "form-label" })
+    @Html.DropDownListFor(
+        m => m.Id_Usuario,
+        new SelectList(ViewBag.Usuarios, "Id", "UserName"),
+                        "Seleccione un usuario",
+        new { @class = "form-select" }
+        )
+    @Html.ValidationMessageFor(m => m.Id_Usuario, "", new { @class = "text-danger" })
+</div>
 
-    <div class="col-md-6">
-        <select asp-for="Descripcion" asp-items="ViewBag.Descripciones" class="form-select"></select>
-    </div>
+<div class="col-md-6">
+    @Html.LabelFor(m => m.Cantidad, new { @class = "form-label" })
+    @Html.TextBoxFor(m => m.Cantidad, new { @class = "form-control", type = "number" })
+    @Html.ValidationMessageFor(m => m.Cantidad, "", new { @class = "text-danger" })
+</div>
 
-    <button class="btn btn-danger">Guardar</button>
-</form>
+<div class="col-md-6">
+    @Html.LabelFor(m => m.Descripcion, new { @class = "form-label" })
+    @Html.DropDownListFor(
+        m => m.Descripcion,
+        (IEnumerable<SelectListItem>)ViewBag.Descripciones,
+                        "Seleccione una descripción",
+        new { @class = "form-select" }
+        )
+    @Html.ValidationMessageFor(m => m.Descripcion, "", new { @class = "text-danger" })
+</div>
+
+<div class="col-12">
+    <button type="submit" class="btn btn-danger">
+        Guardar
+    </button>
+</div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

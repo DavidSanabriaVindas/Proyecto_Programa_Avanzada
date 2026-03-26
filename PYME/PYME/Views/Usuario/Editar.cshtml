@@ -1,56 +1,99 @@
 ﻿@model PYME.Models.Usuario
 
-<h2>Editar Usuario</h2>
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
 
-<form asp-action="Editar" asp-route-id="@Model.Id" method="post" class="row g-3">
+<h2 class="mb-3">Editar Usuario</h2>
 
-    <input type="hidden" asp-for="Id" />
-
-    <div class="col-md-6">
-        <input asp-for="UserName" class="form-control" />
-    </div>
-
-    <div class="col-md-6">
-        <input name="password" type="password" class="form-control" placeholder="Nueva contraseña" />
-    </div>
-
-    <div class="col-md-4">
-        <input asp-for="Nombre" class="form-control" />
-    </div>
-
-    <div class="col-md-4">
-        <input asp-for="Primer_Apellido" class="form-control" />
-    </div>
-
-    <div class="col-md-4">
-        <input asp-for="Segundo_Apellido" class="form-control" />
-    </div>
-
-    <div class="col-md-6">
-        <label>Rol</label>
-        <select name="rol" class="form-select">
-            @foreach (var rol in ViewBag.Roles as List<string>)
+@if (!ViewData.ModelState.IsValid && ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div class="alert alert-danger">
+        <h5>Por favor corrija los siguientes errores:</h5>
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
             {
-                <option value="@rol">@rol</option>
+                <li>@error.ErrorMessage</li>
             }
-        </select>
+        </ul>
+    </div>
+}
+
+@using (Html.BeginForm("Editar", "Usuario", new { id = Model.Id }, FormMethod.Post, null, new { @class = "row g-3" }))
+{
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="col-md-6">
+        @Html.LabelFor(m => m.UserName, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <input asp-for="Email" class="form-control" />
+        @Html.Label("password", "Nueva contraseña", new { @class = "form-label" })
+        @Html.Password("password", null, new { @class = "form-control", placeholder = "Nueva contraseña" })
+    </div>
+
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Nombre, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Primer_Apellido, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Primer_Apellido, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Primer_Apellido, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="col-md-4">
+        @Html.LabelFor(m => m.Segundo_Apellido, new { @class = "form-label" })
+        @Html.TextBoxFor(m => m.Segundo_Apellido, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Segundo_Apellido, "", new { @class = "text-danger" })
     </div>
 
     <div class="col-md-6">
-        <input asp-for="Telefono" class="form-control" />
-    </div>
+        @Html.Label("rol", "Rol", new { @class = "form-label" })
+        @Html.DropDownList(
+                "rol",
+        new SelectList(ViewBag.Roles as List<string>),
+                        "Seleccione un rol",
+        new { @class = "form-select" }
+        )
+</div>
 
-    <div class="col-md-6">
-        <input asp-for="Direccion_Exacta" class="form-control" />
-    </div>
+<div class="col-md-6">
+    @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email" })
+    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+</div>
 
-    <div class="col-12">
-        <input asp-for="Estado" type="checkbox" /> Activo
-    </div>
+<div class="col-md-6">
+    @Html.LabelFor(m => m.Telefono, new { @class = "form-label" })
+    @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Telefono, "", new { @class = "text-danger" })
+</div>
 
-    <button class="btn btn-primary">Guardar</button>
-</form>
+<div class="col-md-6">
+    @Html.LabelFor(m => m.Direccion_Exacta, new { @class = "form-label" })
+    @Html.TextBoxFor(m => m.Direccion_Exacta, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Direccion_Exacta, "", new { @class = "text-danger" })
+</div>
+
+<div class="col-12">
+    <div class="form-check">
+        @Html.CheckBoxFor(m => m.Estado, new { @class = "form-check-input" })
+        @Html.LabelFor(m => m.Estado, "Activo", new { @class = "form-check-label" })
+    </div>
+</div>
+
+<div class="col-12">
+    <button type="submit" class="btn btn-primary">
+        Guardar
+    </button>
+</div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
