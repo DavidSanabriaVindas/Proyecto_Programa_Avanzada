@@ -1,0 +1,118 @@
+@model PYME.Models.Venta
+@{
+    ViewData["Title"] = "Registrar Venta";
+    var clientes = ViewBag.Clientes as List<PYME.Models.Cliente>;
+    var productos = ViewBag.Productos as List<PYME.Models.Producto>;
+}
+
+<h2 class="mb-3">🛒 Registrar Venta</h2>
+
+@if (!ViewData.ModelState.IsValid && ViewContext.HttpContext.Request.Method == "POST")
+{
+    <div class="alert alert-danger">
+        <h5>Por favor corrija los siguientes errores:</h5>
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+@using (Html.BeginForm("Crear", "Venta", FormMethod.Post, new { @class = "row g-3" }))
+{
+    <div class="col-md-6">
+        <label class="form-label">Cliente</label>
+        <select name="Id_Cliente" class="form-select" required>
+            <option value="">-- Seleccione un cliente --</option>
+            @foreach (var c in clientes!)
+            {
+                <option value="@c.Id_Cliente">@c.Nombre @c.Primer_Apellido @c.Segundo_Apellido</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label">Observaciones</label>
+        @Html.TextAreaFor(m => m.Observaciones, 1, 0, new { @class = "form-control", placeholder = "Notas opcionales..." })
+    </div>
+
+    <div class="col-12">
+        <h5 class="mt-2">📦 Productos disponibles</h5>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Nombre</th>
+                    <th>Precio Venta</th>
+                    <th>Stock disponible</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in productos!)
+                {
+                    <tr>
+                        <td>
+                            @p.SKU
+                            <input type="hidden" name="ProductoIds" value="@p.Id_Producto" />
+                        </td>
+                        <td>@p.Nombre</td>
+                        <td>₡@p.Precio_Venta.ToString("N0")</td>
+                        <td>
+                            @if (p.Stock_Actual <= p.Stock_Minimo)
+                            {
+                                <span class="badge bg-warning text-dark">@p.Stock_Actual ⚠️</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">@p.Stock_Actual</span>
+                            }
+                        </td>
+                        <td>
+                            <input type="number"
+                                   name="Cantidades"
+                                   value="0"
+                                   min="0"
+                                   max="@p.Stock_Actual"
+                                   class="form-control form-control-sm cantidad-input"
+                                   data-precio="@p.Precio_Venta"
+                                   style="width:90px;" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-12">
+        <div class="alert alert-info d-flex align-items-center gap-2">
+            <strong>Total estimado:</strong>
+            <span id="totalEstimado" class="fs-5 fw-bold">₡0</span>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-save"></i> Guardar venta
+        </button>
+        @Html.ActionLink("Cancelar", "Index", "Venta", null, new { @class = "btn btn-secondary" })
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function actualizarTotal() {
+            let total = 0;
+            $('.cantidad-input').each(function () {
+                const cantidad = parseInt($(this).val()) || 0;
+                const precio = parseInt($(this).data('precio')) || 0;
+                total += cantidad * precio;
+            });
+            $('#totalEstimado').text('₡' + total.toLocaleString('es-CR'));
+        }
+
+        $(document).on('input', '.cantidad-input', actualizarTotal);
+    </script>
+}

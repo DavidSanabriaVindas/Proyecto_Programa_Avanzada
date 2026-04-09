@@ -1,0 +1,111 @@
+@model PYME.Models.Venta
+@{
+    ViewData["Title"] = "Detalle de Venta";
+}
+
+<h2 class="mb-3">🧾 Detalle de Venta #@Model.Id_Venta</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="card shadow mb-4" style="max-width: 900px;">
+    <div class="card-body">
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <p><strong>Cliente:</strong> @Model.Cliente?.Nombre @Model.Cliente?.Primer_Apellido @Model.Cliente?.Segundo_Apellido</p>
+                <p><strong>Vendedor:</strong> @Model.Usuario?.UserName</p>
+                <p><strong>Fecha:</strong> @Model.Fecha_Venta?.ToString("dd/MM/yyyy HH:mm")</p>
+            </div>
+            <div class="col-md-6">
+                <p>
+                    <strong>Estado:</strong>
+                    @{
+                        var badgeClass = Model.Estado switch
+                        {
+                            "Completada" => "bg-success",
+                            "Pendiente"  => "bg-warning text-dark",
+                            "Cancelada"  => "bg-danger",
+                            _            => "bg-secondary"
+                        };
+                    }
+                    <span class="badge @badgeClass">@Model.Estado</span>
+                </p>
+                <p><strong>Total:</strong> <span class="fs-5 fw-bold">₡@Model.Total.ToString("N0")</span></p>
+                @if (!string.IsNullOrWhiteSpace(Model.Observaciones))
+                {
+                    <p><strong>Observaciones:</strong> @Model.Observaciones</p>
+                }
+            </div>
+        </div>
+
+        <hr />
+
+        <h5>📋 Productos (@Model.Detalles.Count)</h5>
+
+        @if (Model.Detalles.Any())
+        {
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Producto</th>
+                        <th>Precio Unitario</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detalle in Model.Detalles)
+                    {
+                        <tr>
+                            <td>@detalle.Producto?.SKU</td>
+                            <td>@detalle.Producto?.Nombre</td>
+                            <td>₡@detalle.Precio_Unitario.ToString("N0")</td>
+                            <td>@detalle.Cantidad</td>
+                            <td>₡@detalle.Subtotal.ToString("N0")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr class="table-dark">
+                        <td colspan="4" class="text-end fw-bold">Total:</td>
+                        <td class="fw-bold">₡@Model.Total.ToString("N0")</td>
+                    </tr>
+                </tfoot>
+            </table>
+        }
+        else
+        {
+            <p class="text-muted">No hay productos en esta venta.</p>
+        }
+
+        <hr />
+
+        <a asp-action="Index" class="btn btn-secondary">Volver al listado</a>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Gerente"))
+        {
+            <a asp-action="CambiarEstado"
+               asp-route-id="@Model.Id_Venta"
+               class="btn btn-warning">Cambiar estado</a>
+        }
+
+        @if (User.IsInRole("Admin"))
+        {
+            <form asp-action="Eliminar"
+                  asp-route-id="@Model.Id_Venta"
+                  method="post"
+                  style="display:inline;"
+                  onsubmit="return confirm('¿Está seguro de eliminar esta venta?');">
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            </form>
+        }
+
+    </div>
+</div>

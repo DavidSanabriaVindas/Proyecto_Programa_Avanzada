@@ -1,0 +1,50 @@
+@model PYME.Models.Venta
+@{
+    ViewData["Title"] = "Cambiar Estado de Venta";
+}
+
+<h2 class="mb-3">🔄 Cambiar Estado — Venta #@Model.Id_Venta</h2>
+
+<div class="card shadow" style="max-width: 500px;">
+    <div class="card-body">
+
+        <p><strong>Cliente:</strong> @Model.Cliente?.Nombre @Model.Cliente?.Primer_Apellido</p>
+        <p><strong>Fecha:</strong> @Model.Fecha_Venta?.ToString("dd/MM/yyyy HH:mm")</p>
+        <p><strong>Total:</strong> ₡@Model.Total.ToString("N0")</p>
+        <p>
+            <strong>Estado actual:</strong>
+            @{
+                var badgeClass = Model.Estado switch
+                {
+                    "Completada" => "bg-success",
+                    "Pendiente"  => "bg-warning text-dark",
+                    "Cancelada"  => "bg-danger",
+                    _            => "bg-secondary"
+                };
+            }
+            <span class="badge @badgeClass">@Model.Estado</span>
+        </p>
+
+        <hr />
+
+        @using (Html.BeginForm("CambiarEstado", "Venta", new { id = Model.Id_Venta }, FormMethod.Post, null, new { @class = "row g-3" }))
+        {
+            <div class="col-12">
+                <label class="form-label">Nuevo Estado</label>
+                <select name="nuevoEstado" class="form-select" required>
+                    <option value="Pendiente"   selected="@(Model.Estado == "Pendiente")">Pendiente</option>
+                    <option value="Completada"  selected="@(Model.Estado == "Completada")">Completada</option>
+                    <option value="Cancelada"   selected="@(Model.Estado == "Cancelada")">Cancelada</option>
+                </select>
+            </div>
+
+            <div class="col-12 mt-2">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-check-circle"></i> Guardar cambio
+                </button>
+                @Html.ActionLink("Cancelar", "Detalle", "Venta", new { id = Model.Id_Venta }, new { @class = "btn btn-secondary" })
+            </div>
+        }
+
+    </div>
+</div>

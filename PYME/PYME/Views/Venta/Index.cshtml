@@ -1,0 +1,114 @@
+@model List<PYME.Models.Venta>
+@{
+    ViewData["Title"] = "Ventas";
+}
+
+<h2 class="mb-3">🛒 Gestión de Ventas</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["Mensaje"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <input type="text" id="buscador" class="form-control" placeholder="🔍 Buscar por cliente o estado..." />
+    </div>
+    <div class="col-md-6 text-end">
+        @if (User.IsInRole("Admin") || User.IsInRole("Gerente") || User.IsInRole("Vendedor"))
+        {
+            <a asp-action="Crear" class="btn btn-success">
+                ➕ Registrar nueva venta
+            </a>
+        }
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Vendedor</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tablaVentas">
+        @foreach (var venta in Model)
+        {
+            <tr>
+                <td>@venta.Id_Venta</td>
+                <td>@venta.Fecha_Venta?.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@venta.Cliente?.Nombre @venta.Cliente?.Primer_Apellido</td>
+                <td>@venta.Usuario?.UserName</td>
+                <td>₡@venta.Total.ToString("N0")</td>
+                <td>
+                    @{
+                        var badgeClass = venta.Estado switch
+                        {
+                            "Completada" => "bg-success",
+                            "Pendiente"  => "bg-warning text-dark",
+                            "Cancelada"  => "bg-danger",
+                            _            => "bg-secondary"
+                        };
+                    }
+                    <span class="badge @badgeClass">@venta.Estado</span>
+                </td>
+                <td>
+                    <a asp-action="Detalle"
+                       asp-route-id="@venta.Id_Venta"
+                       class="btn btn-primary btn-sm">Ver detalle</a>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Gerente"))
+                    {
+                        <a asp-action="CambiarEstado"
+                           asp-route-id="@venta.Id_Venta"
+                           class="btn btn-warning btn-sm">Cambiar estado</a>
+                    }
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <form asp-action="Eliminar"
+                              asp-route-id="@venta.Id_Venta"
+                              method="post"
+                              style="display:inline;"
+                              onsubmit="return confirm('¿Está seguro de eliminar esta venta?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <p class="text-muted text-center mt-3">No hay ventas registradas.</p>
+}
+
+@section Scripts {
+    <script>
+        $('#buscador').on('input', function () {
+            const texto = $(this).val().toLowerCase();
+            $('#tablaVentas tr').each(function () {
+                const fila = $(this).text().toLowerCase();
+                $(this).toggle(fila.includes(texto));
+            });
+        });
+    </script>
+}
