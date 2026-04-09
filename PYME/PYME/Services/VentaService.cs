@@ -61,12 +61,10 @@ namespace PYME.Services
             {
                 var producto = _productoRepository.ObtenerPorId(detalle.Id_Producto)!;
 
-                // Descontar stock
                 producto.Stock_Actual -= detalle.Cantidad;
                 producto.Fecha_Actualizacion = DateTime.Now;
                 _productoRepository.Actualizar(producto);
 
-                // Registrar movimiento de salida
                 _movimientoRepository.Agregar(new MovimientoInventario
                 {
                     Id_Producto = detalle.Id_Producto,

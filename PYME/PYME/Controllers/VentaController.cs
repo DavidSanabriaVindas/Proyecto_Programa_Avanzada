@@ -28,9 +28,8 @@ namespace PYME.Controllers
             _userManager = userManager;
         }
 
-        // GET /venta
         [HttpGet("")]
-        [Authorize(Roles = $"{Roles.Admin},{Roles.Gerente},{Roles.Vendedor}")]
+        [Authorize(Roles = "Admin,Vendedor")]
         public async Task<IActionResult> Index()
         {
             var usuario = await _userManager.GetUserAsync(User);
@@ -50,9 +49,8 @@ namespace PYME.Controllers
             return View(ventas);
         }
 
-        // GET /venta/detalle/5
         [HttpGet("detalle/{id:int}")]
-        [Authorize(Roles = $"{Roles.Admin},{Roles.Gerente},{Roles.Vendedor}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Detalle(int id)
         {
             var venta = _ventaService.ObtenerDetalle(id);
@@ -60,7 +58,6 @@ namespace PYME.Controllers
             if (venta == null)
                 return NotFound();
 
-            // Vendedor solo puede ver sus propias ventas
             if (User.IsInRole(Roles.Vendedor))
             {
                 var usuario = await _userManager.GetUserAsync(User);
@@ -71,9 +68,8 @@ namespace PYME.Controllers
             return View(venta);
         }
 
-        // GET /venta/crear
         [HttpGet("crear")]
-        [Authorize(Roles = $"{Roles.Admin},{Roles.Gerente},{Roles.Vendedor}")]
+        [Authorize(Roles = "Admin,Vendedor")]
         public IActionResult Crear()
         {
             ViewBag.Clientes = _clienteService.ObtenerTodos();
@@ -83,9 +79,8 @@ namespace PYME.Controllers
             return View(new Venta());
         }
 
-        // POST /venta/crear
         [HttpPost("crear")]
-        [Authorize(Roles = $"{Roles.Admin},{Roles.Gerente},{Roles.Vendedor}")]
+        [Authorize(Roles = "Admin,Vendedor")]
         public async Task<IActionResult> Crear(
     [FromForm] int Id_Cliente,
     [FromForm] string? Observaciones,
@@ -131,9 +126,8 @@ namespace PYME.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET /venta/cambiar-estado/5
         [HttpGet("cambiar-estado/{id:int}")]
-        [Authorize(Roles = $"{Roles.Admin},{Roles.Gerente}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult CambiarEstado(int id)
         {
             var venta = _ventaService.ObtenerDetalle(id);
@@ -143,9 +137,8 @@ namespace PYME.Controllers
             return View(venta);
         }
 
-        // POST /venta/cambiar-estado/5
         [HttpPost("cambiar-estado/{id:int}")]
-        [Authorize(Roles = $"{Roles.Admin},{Roles.Gerente}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult CambiarEstado(int id, string nuevoEstado)
         {
             var (success, mensaje) = _ventaService.ActualizarEstado(id, nuevoEstado);
@@ -160,7 +153,6 @@ namespace PYME.Controllers
             return RedirectToAction("Index");
         }
 
-        // POST /venta/eliminar/5
         [HttpPost("eliminar/{id:int}")]
         [Authorize(Roles = Roles.Admin)]
         public IActionResult Eliminar(int id)
