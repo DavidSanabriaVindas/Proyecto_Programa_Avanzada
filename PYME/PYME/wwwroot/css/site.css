@@ -126,12 +126,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* === Tablas === */
-.table {
-    background: #fff;
+.table-responsive {
     border-radius: var(--pyme-radius-lg);
     overflow: hidden;
     box-shadow: var(--pyme-shadow);
+}
+
+.table {
+    background: #fff;
     font-size: 0.93rem;
+    margin-bottom: 0;
 }
 
     .table thead {
@@ -174,6 +178,15 @@ h1, h2, h3, h4, h5, h6 {
     border: none;
 }
 
+.table > thead > tr > th {
+    color: #fff !important;
+    background-color: var(--pyme-primary) !important;
+    box-shadow: none !important;
+}
+
+.table > thead {
+    background: var(--pyme-primary) !important;
+}
 /* === Botones === */
 .btn {
     font-family: 'Nunito', sans-serif;
@@ -437,7 +450,7 @@ hr {
     border-color: var(--pyme-gray-200);
 }
 
-/* === form-floating placeholder fix (original) === */
+/* === form-floating placeholder fix === */
 .form-floating > .form-control-plaintext::placeholder,
 .form-floating > .form-control::placeholder {
     color: var(--pyme-gray-400);
