@@ -251,6 +251,39 @@ namespace PYME.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Ventas",
+                columns: table => new
+                {
+                    Id_Venta = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Fecha_Venta = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Total = table.Column<int>(type: "int", nullable: false),
+                    Observaciones = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Estado = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Id_Cliente = table.Column<int>(type: "int", nullable: false),
+                    Id_Usuario = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ventas", x => x.Id_Venta);
+                    table.ForeignKey(
+                        name: "FK_Ventas_AspNetUsers_Id_Usuario",
+                        column: x => x.Id_Usuario,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Ventas_Clientes_Id_Cliente",
+                        column: x => x.Id_Cliente,
+                        principalTable: "Clientes",
+                        principalColumn: "Id_Cliente",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Movimientos",
                 columns: table => new
                 {
@@ -280,6 +313,36 @@ namespace PYME.Migrations
                         principalTable: "Productos",
                         principalColumn: "Id_Producto",
                         onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Detalles_Venta",
+                columns: table => new
+                {
+                    Id_Detalle_Venta = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Cantidad = table.Column<int>(type: "int", nullable: false),
+                    Precio_Unitario = table.Column<int>(type: "int", nullable: false),
+                    Subtotal = table.Column<int>(type: "int", nullable: false),
+                    Id_Venta = table.Column<int>(type: "int", nullable: false),
+                    Id_Producto = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Detalles_Venta", x => x.Id_Detalle_Venta);
+                    table.ForeignKey(
+                        name: "FK_Detalles_Venta_Productos_Id_Producto",
+                        column: x => x.Id_Producto,
+                        principalTable: "Productos",
+                        principalColumn: "Id_Producto",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Detalles_Venta_Ventas_Id_Venta",
+                        column: x => x.Id_Venta,
+                        principalTable: "Ventas",
+                        principalColumn: "Id_Venta",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -327,6 +390,16 @@ namespace PYME.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Detalles_Venta_Id_Producto",
+                table: "Detalles_Venta",
+                column: "Id_Producto");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Detalles_Venta_Id_Venta",
+                table: "Detalles_Venta",
+                column: "Id_Venta");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Movimientos_Id_Producto",
                 table: "Movimientos",
                 column: "Id_Producto");
@@ -334,6 +407,16 @@ namespace PYME.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Movimientos_Id_Usuario",
                 table: "Movimientos",
+                column: "Id_Usuario");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ventas_Id_Cliente",
+                table: "Ventas",
+                column: "Id_Cliente");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ventas_Id_Usuario",
+                table: "Ventas",
                 column: "Id_Usuario");
         }
 
@@ -356,7 +439,7 @@ namespace PYME.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Clientes");
+                name: "Detalles_Venta");
 
             migrationBuilder.DropTable(
                 name: "Movimientos");
@@ -365,10 +448,16 @@ namespace PYME.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Ventas");
 
             migrationBuilder.DropTable(
                 name: "Productos");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Clientes");
         }
     }
 }

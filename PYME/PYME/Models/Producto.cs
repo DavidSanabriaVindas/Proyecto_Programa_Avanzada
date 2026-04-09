@@ -35,5 +35,6 @@ namespace PYME.Models
         public DateTime? Fecha_Actualizacion { get; set; }
 
         public List<MovimientoInventario> MovimientosInvetario { get; set; } = new();
+        public List<Detalle_Venta> Detalles_Venta { get; set; } = new();
     }
 }

@@ -22,5 +22,7 @@ namespace PYME.Models
         public string? Correo { get; set; }
 
         public string? Direccion_Exacta { get; set; }
+
+        public List<Venta> Ventas { get; set; } = new();
     }
 }
