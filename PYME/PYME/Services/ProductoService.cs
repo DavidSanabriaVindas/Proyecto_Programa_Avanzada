@@ -84,5 +84,14 @@ namespace PYME.Services
                 Estado = p.Estado
             }).ToList();
         }
+
+        public List<Producto> ObtenerProductosStockBajo()
+        {
+            var productos = _repository.ObtenerTodos();
+
+            return productos
+                .Where(p => p.Stock_Actual.HasValue && p.Stock_Actual <= p.Stock_Minimo)
+                .ToList();
+        }
     }
 }

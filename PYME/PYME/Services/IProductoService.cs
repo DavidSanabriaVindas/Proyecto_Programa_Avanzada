@@ -10,5 +10,6 @@ namespace PYME.Services
         bool ActualizarProducto(int id, Producto producto);
         bool EliminarProducto(int id);
         List<Producto> Buscar(string texto);
+        List<Producto> ObtenerProductosStockBajo();
     }
 }

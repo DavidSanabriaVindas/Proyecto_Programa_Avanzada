@@ -1,0 +1,36 @@
+﻿@model List<PYME.Models.Producto>
+
+<h2>⚠ Productos con Stock Bajo</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-success">
+        No hay productos con stock bajo.
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">
+        Hay @Model.Count productos con stock bajo
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Stock Actual</th>
+                <th>Stock Mínimo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.Nombre</td>
+                    <td>@p.Stock_Actual</td>
+                    <td>@p.Stock_Minimo</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
