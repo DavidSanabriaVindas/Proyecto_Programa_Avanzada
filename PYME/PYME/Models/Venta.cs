@@ -18,13 +18,13 @@ namespace PYME.Models
         [Required(ErrorMessage = "El estado es obligatorio.")]
         public string Estado { get; set; } = "Pendiente";
 
-        [ForeignKey(nameof(Cliente))]
         public int Id_Cliente { get; set; }
+        [ForeignKey(nameof(Id_Cliente))]
         [ValidateNever]
         public Cliente? Cliente { get; set; }
 
-        [ForeignKey(nameof(Usuario))]
         public int Id_Usuario { get; set; }
+        [ForeignKey(nameof(Id_Usuario))]
         [ValidateNever]
         public Usuario? Usuario { get; set; }
 

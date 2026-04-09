@@ -87,12 +87,20 @@ namespace PYME.Controllers
         [HttpPost("crear")]
         [Authorize(Roles = $"{Roles.Admin},{Roles.Gerente},{Roles.Vendedor}")]
         public async Task<IActionResult> Crear(
-            Venta venta,
-            List<int> ProductoIds,
-            List<int> Cantidades)
+    [FromForm] int Id_Cliente,
+    [FromForm] string? Observaciones,
+    List<int> ProductoIds,
+    List<int> Cantidades)
         {
             var usuario = await _userManager.GetUserAsync(User);
-            venta.Id_Usuario = usuario!.Id;
+
+            var venta = new Venta
+            {
+                Id_Cliente = Id_Cliente,
+                Observaciones = Observaciones,
+                Id_Usuario = usuario!.Id,
+                Estado = "Pendiente"
+            };
 
             var detalles = new List<Detalle_Venta>();
             for (int i = 0; i < ProductoIds.Count; i++)
@@ -116,7 +124,7 @@ namespace PYME.Controllers
                 ViewBag.Productos = _productoService.ObtenerTodos()
                     .Where(p => p.Estado && p.Stock_Actual > 0)
                     .ToList();
-                return View(venta);
+                return View(new Venta());
             }
 
             TempData["Mensaje"] = mensaje;
