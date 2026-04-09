@@ -5,6 +5,7 @@
 
 <h2 class="mb-3">📦 Gestión de Productos</h2>
 
+
 <div class="row mb-3">
     <div class="col-md-6">
         <input type="text" id="buscador" class="form-control" placeholder="🔍 Buscar por nombre o SKU..." />
@@ -15,7 +16,13 @@
         </a>
     </div>
 </div>
-
+@if (Model.Any(p => p.Stock_Actual <= p.Stock_Minimo))
+{
+    <div class="alert alert-warning">
+        ⚠ Hay productos con stock bajo.
+        <a href="/producto/alertas-stock">Ver productos</a>
+    </div>
+}
 <table class="table table-striped">
     <thead>
         <tr>

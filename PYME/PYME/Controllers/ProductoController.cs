@@ -98,5 +98,12 @@ namespace PYME.Controllers
         {
             return Json(_productoService.Buscar(texto));
         }
+
+        [HttpGet("alertas-stock")]
+        public IActionResult AlertasStock()
+        {
+            var productos = _productoService.ObtenerProductosStockBajo();
+            return View(productos);
+        }
     }
 }
