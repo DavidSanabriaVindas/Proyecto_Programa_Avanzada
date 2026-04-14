@@ -17,9 +17,9 @@
                 var badgeClass = Model.Estado switch
                 {
                     "Completada" => "bg-success",
-                    "Pendiente"  => "bg-warning text-dark",
-                    "Cancelada"  => "bg-danger",
-                    _            => "bg-secondary"
+                    "Pendiente" => "bg-warning text-dark",
+                    "Cancelada" => "bg-danger",
+                    _ => "bg-secondary"
                 };
             }
             <span class="badge @badgeClass">@Model.Estado</span>
@@ -27,23 +27,33 @@
 
         <hr />
 
-        @using (Html.BeginForm("CambiarEstado", "Venta", new { id = Model.Id_Venta }, FormMethod.Post, null, new { @class = "row g-3" }))
+        @if (Model.Estado == "Completada" || Model.Estado == "Cancelada")
         {
-            <div class="col-12">
-                <label class="form-label">Nuevo Estado</label>
-                <select name="nuevoEstado" class="form-select" required>
-                    <option value="Pendiente"   selected="@(Model.Estado == "Pendiente")">Pendiente</option>
-                    <option value="Completada"  selected="@(Model.Estado == "Completada")">Completada</option>
-                    <option value="Cancelada"   selected="@(Model.Estado == "Cancelada")">Cancelada</option>
-                </select>
+            <div class="alert alert-warning">
+                Esta venta está <strong>@Model.Estado</strong> y no puede modificarse.
             </div>
+            @Html.ActionLink("Volver", "Index", "Venta", null, new { @class = "btn btn-secondary" })
+        }
+        else
+        {
+            @using (Html.BeginForm("CambiarEstado", "Venta", new { id = Model.Id_Venta }, FormMethod.Post, null, new { @class = "row g-3" }))
+            {
+                <div class="col-12">
+                    <label class="form-label">Nuevo Estado</label>
+                    <select name="nuevoEstado" class="form-select" required>
+                        <option value="Pendiente" selected="@(Model.Estado == "Pendiente")">Pendiente</option>
+                        <option value="Completada">Completada</option>
+                        <option value="Cancelada">Cancelada</option>
+                    </select>
+                </div>
 
-            <div class="col-12 mt-2">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-check-circle"></i> Guardar cambio
-                </button>
-                @Html.ActionLink("Cancelar", "Detalle", "Venta", new { id = Model.Id_Venta }, new { @class = "btn btn-secondary" })
-            </div>
+                <div class="col-12 mt-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Guardar cambio
+                    </button>
+                    @Html.ActionLink("Cancelar", "Detalle", "Venta", new { id = Model.Id_Venta }, new { @class = "btn btn-secondary" })
+                </div>
+            }
         }
 
     </div>

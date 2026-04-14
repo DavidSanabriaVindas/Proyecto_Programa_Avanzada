@@ -64,6 +64,8 @@ namespace PYME.Services
             venta.Total = total;
             venta.Fecha_Venta = DateTime.Now;
             venta.Detalles = detalles;
+            venta.Estado = "Pendiente";
+
             _ventaRepository.Agregar(venta);
 
             foreach (var detalle in detalles)
@@ -72,16 +74,6 @@ namespace PYME.Services
                 producto.Stock_Actual -= detalle.Cantidad;
                 producto.Fecha_Actualizacion = DateTime.Now;
                 _productoRepository.Actualizar(producto);
-
-                _movimientoRepository.Agregar(new MovimientoInventario
-                {
-                    Id_Producto = detalle.Id_Producto,
-                    Id_Usuario = venta.Id_Usuario,
-                    Cantidad = detalle.Cantidad,
-                    Tipo_Movimiento = "SALIDA",
-                    Descripcion = "Venta",
-                    Fecha_Movimiento = DateTime.Now
-                });
             }
 
             return (true, "Venta registrada exitosamente.");
@@ -93,8 +85,47 @@ namespace PYME.Services
             if (venta == null)
                 return (false, "Venta no encontrada.");
 
+            var estadoAnterior = venta.Estado;
+
+            if (estadoAnterior == "Completada")
+                return (false, "No se puede modificar una venta ya completada.");
+
+            if (estadoAnterior == "Cancelada")
+                return (false, "No se puede modificar una venta cancelada.");
+
             venta.Estado = nuevoEstado;
             _ventaRepository.Actualizar(venta);
+
+            if (nuevoEstado == "Completada" && estadoAnterior != "Completada")
+            {
+                foreach (var detalle in venta.Detalles)
+                {
+                    _movimientoRepository.Agregar(new MovimientoInventario
+                    {
+                        Id_Producto = detalle.Id_Producto,
+                        Id_Usuario = venta.Id_Usuario,
+                        Cantidad = detalle.Cantidad,
+                        Tipo_Movimiento = "SALIDA",
+                        Descripcion = "Venta",
+                        Fecha_Movimiento = DateTime.Now
+                    });
+                }
+            }
+
+            if (nuevoEstado == "Cancelada" && estadoAnterior != "Cancelada")
+            {
+                foreach (var detalle in venta.Detalles)
+                {
+                    var producto = _productoRepository.ObtenerPorId(detalle.Id_Producto);
+                    if (producto != null)
+                    {
+                        producto.Stock_Actual += detalle.Cantidad;
+                        producto.Fecha_Actualizacion = DateTime.Now;
+                        _productoRepository.Actualizar(producto);
+                    }
+                }
+            }
+
             return (true, "Estado actualizado.");
         }
 
