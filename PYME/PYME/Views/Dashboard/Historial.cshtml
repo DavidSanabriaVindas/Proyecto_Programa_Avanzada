@@ -1,0 +1,158 @@
+﻿@model PYME.Models.HistorialProductoVM
+@{
+    ViewData["Title"] = "Historial de Transacciones";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>📋 Historial de Transacciones por Producto</h2>
+    <a asp-action="Index" asp-controller="Dashboard" class="btn btn-outline-secondary btn-sm">← Volver al Dashboard</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label mb-1 small fw-bold">Producto</label>
+                <select name="idProducto" class="form-select form-select-sm">
+                    <option value="0">-- Seleccionar --</option>
+                    @foreach (var p in Model.TodosLosProductos)
+                    {
+                        <option value="@p.Id_Producto"
+                                selected="@(Model.Producto?.Id_Producto == p.Id_Producto ? "selected" : null)">
+                            [@p.SKU] @p.Nombre
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label mb-1 small fw-bold">Desde</label>
+                <input type="date" name="fechaInicio" class="form-control form-control-sm"
+                       value="@Model.FechaInicio?.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label mb-1 small fw-bold">Hasta</label>
+                <input type="date" name="fechaFin" class="form-control form-control-sm"
+                       value="@Model.FechaFin?.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label mb-1 small fw-bold">Tipo</label>
+                <select name="tipoFiltro" class="form-select form-select-sm">
+                    <option value="TODOS" selected="@(Model.TipoFiltro == null || Model.TipoFiltro == "TODOS" ? "selected" : null)">Todos</option>
+                    <option value="ENTRADA" selected="@(Model.TipoFiltro == "ENTRADA" ? "selected" : null)">Entradas</option>
+                    <option value="SALIDA" selected="@(Model.TipoFiltro == "SALIDA" ? "selected" : null)">Salidas</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary btn-sm w-100">Buscar</button>
+            </div>
+            @if (Model.Producto?.Id_Producto > 0 && Model.Movimientos.Any())
+            {
+                <div class="col-md-2">
+                    <a href="/dashboard/exportar-csv?idProducto=@Model.Producto.Id_Producto&fechaInicio=@Model.FechaInicio?.ToString("yyyy-MM-dd")&fechaFin=@Model.FechaFin?.ToString("yyyy-MM-dd")&tipoFiltro=@Model.TipoFiltro"
+                       class="btn btn-success btn-sm w-100">⬇ Exportar CSV</a>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+@if (Model.Producto?.Id_Producto > 0)
+{
+    <div class="card mb-3 border-primary">
+        <div class="card-body py-2">
+            <div class="row">
+                <div class="col-md-2"><strong>SKU:</strong> <code>@Model.Producto.SKU</code></div>
+                <div class="col-md-3"><strong>Nombre:</strong> @Model.Producto.Nombre</div>
+                <div class="col-md-2">
+                    <strong>Stock Actual:</strong>
+                    <span class="@(Model.Producto.Stock_Actual <= Model.Producto.Stock_Minimo ? "text-danger fw-bold" : "text-success fw-bold")">
+                        @Model.Producto.Stock_Actual
+                    </span>
+                </div>
+                <div class="col-md-2"><strong>Stock Mínimo:</strong> @Model.Producto.Stock_Minimo</div>
+                <div class="col-md-3"><strong>Precio Venta:</strong> ₡@Model.Producto.Precio_Venta.ToString("N0")</div>
+            </div>
+        </div>
+    </div>
+
+    {
+        var totalEntradas = Model.Movimientos.Where(m => m.Tipo_Movimiento == "ENTRADA").Sum(m => m.Cantidad);
+        var totalSalidas = Model.Movimientos.Where(m => m.Tipo_Movimiento == "SALIDA").Sum(m => m.Cantidad);
+        var totalVentas = Model.Movimientos.Where(m => m.Tipo_Movimiento == "SALIDA" && m.Descripcion == "Venta").Sum(m => m.Cantidad);
+    }
+    <div class="row g-2 mb-3">
+        <div class="col-md-3">
+            <div class="card text-center bg-light">
+                <div class="card-body py-2">
+                    <div class="small text-muted">Total movimientos</div>
+                    <strong class="fs-5">@Model.Movimientos.Count</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-light">
+                <div class="card-body py-2">
+                    <div class="small text-muted">Unidades ingresadas</div>
+                    <strong class="fs-5 text-primary">@Model.TotalEntradas</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-light">
+                <div class="card-body py-2">
+                    <div class="small text-muted">Unidades salidas</div>
+                    <strong class="fs-5 text-danger">@Model.TotalSalidas</strong>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-light">
+                <div class="card-body py-2">
+                    <div class="small text-muted">Unidades vendidas</div>
+                    <strong class="fs-5 text-success">@Model.TotalVentas</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Movimientos.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                        <th>Usuario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model.Movimientos)
+                    {
+                        <tr class="@(m.Tipo_Movimiento == "ENTRADA" ? "table-success" : "table-danger")">
+                            <td>@m.Fecha_Movimiento?.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <span class="badge @(m.Tipo_Movimiento == "ENTRADA" ? "bg-success" : "bg-danger")">
+                                    @m.Tipo_Movimiento
+                                </span>
+                            </td>
+                            <td><strong>@m.Cantidad</strong></td>
+                            <td>@m.Descripcion</td>
+                            <td>@m.Usuario?.UserName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">No hay movimientos para los filtros seleccionados.</div>
+    }
+}
+else
+{
+    <div class="alert alert-secondary">Seleccioná un producto para ver su historial.</div>
+}
