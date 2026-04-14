@@ -12,59 +12,28 @@ namespace PYME.Controllers
     public class VentaController : Controller
     {
         private readonly IVentaService _ventaService;
-        private readonly IClienteService _clienteService;
-        private readonly IProductoService _productoService;
         private readonly UserManager<Usuario> _userManager;
 
-        public VentaController(
-            IVentaService ventaService,
-            IClienteService clienteService,
-            IProductoService productoService,
-            UserManager<Usuario> userManager)
+        public VentaController(IVentaService ventaService, UserManager<Usuario> userManager)
         {
             _ventaService = ventaService;
-            _clienteService = clienteService;
-            _productoService = productoService;
             _userManager = userManager;
         }
 
         [HttpGet("")]
         [Authorize(Roles = "Admin,Vendedor")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var usuario = await _userManager.GetUserAsync(User);
-            List<Venta> ventas;
-
-            if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Gerente))
-            {
-                ventas = _ventaService.ObtenerTodos();
-            }
-            else
-            {
-                ventas = _ventaService.ObtenerTodos()
-                    .Where(v => v.Id_Usuario == usuario!.Id)
-                    .ToList();
-            }
-
+            var ventas = _ventaService.ObtenerTodos();
             return View(ventas);
         }
 
         [HttpGet("detalle/{id:int}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Detalle(int id)
+        public IActionResult Detalle(int id)
         {
             var venta = _ventaService.ObtenerDetalle(id);
-
-            if (venta == null)
-                return NotFound();
-
-            if (User.IsInRole(Roles.Vendedor))
-            {
-                var usuario = await _userManager.GetUserAsync(User);
-                if (venta.Id_Usuario != usuario!.Id)
-                    return Forbid();
-            }
-
+            if (venta == null) return NotFound();
             return View(venta);
         }
 
@@ -72,22 +41,29 @@ namespace PYME.Controllers
         [Authorize(Roles = "Admin,Vendedor")]
         public IActionResult Crear()
         {
-            ViewBag.Clientes = _clienteService.ObtenerTodos();
-            ViewBag.Productos = _productoService.ObtenerTodos()
-                .Where(p => p.Estado && p.Stock_Actual > 0)
-                .ToList();
+            ViewBag.Clientes = _ventaService.ObtenerClientes();
+            ViewBag.Productos = _ventaService.ObtenerProductosDisponibles();
             return View(new Venta());
         }
 
         [HttpPost("crear")]
         [Authorize(Roles = "Admin,Vendedor")]
         public async Task<IActionResult> Crear(
-    [FromForm] int Id_Cliente,
-    [FromForm] string? Observaciones,
-    List<int> ProductoIds,
-    List<int> Cantidades)
+            [FromForm] int Id_Cliente,
+            [FromForm] string? Observaciones,
+            List<int> ProductoIds,
+            List<int> Cantidades)
         {
             var usuario = await _userManager.GetUserAsync(User);
+
+            var detalles = ProductoIds
+                .Select((idProducto, i) => new Detalle_Venta
+                {
+                    Id_Producto = idProducto,
+                    Cantidad = Cantidades[i]
+                })
+                .Where(d => d.Cantidad > 0)
+                .ToList();
 
             var venta = new Venta
             {
@@ -97,28 +73,13 @@ namespace PYME.Controllers
                 Estado = "Pendiente"
             };
 
-            var detalles = new List<Detalle_Venta>();
-            for (int i = 0; i < ProductoIds.Count; i++)
-            {
-                if (Cantidades[i] > 0)
-                {
-                    detalles.Add(new Detalle_Venta
-                    {
-                        Id_Producto = ProductoIds[i],
-                        Cantidad = Cantidades[i]
-                    });
-                }
-            }
-
             var (success, mensaje) = _ventaService.CrearVenta(venta, detalles);
 
             if (!success)
             {
                 ModelState.AddModelError("", mensaje);
-                ViewBag.Clientes = _clienteService.ObtenerTodos();
-                ViewBag.Productos = _productoService.ObtenerTodos()
-                    .Where(p => p.Estado && p.Stock_Actual > 0)
-                    .ToList();
+                ViewBag.Clientes = _ventaService.ObtenerClientes();
+                ViewBag.Productos = _ventaService.ObtenerProductosDisponibles();
                 return View(new Venta());
             }
 
@@ -131,9 +92,7 @@ namespace PYME.Controllers
         public IActionResult CambiarEstado(int id)
         {
             var venta = _ventaService.ObtenerDetalle(id);
-            if (venta == null)
-                return NotFound();
-
+            if (venta == null) return NotFound();
             return View(venta);
         }
 
