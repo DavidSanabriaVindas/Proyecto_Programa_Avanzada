@@ -43,7 +43,7 @@ body {
     font-family: 'Nunito', sans-serif;
     background-color: var(--pyme-gray-100);
     color: var(--pyme-gray-900);
-    margin-bottom: 60px;
+    margin-bottom: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -315,7 +315,7 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 0.87rem;
     }
 
-.row.g-3 {
+.form-card.row.g-3 {
     background: #fff;
     border-radius: var(--pyme-radius-lg);
     box-shadow: var(--pyme-shadow-lg);
@@ -460,4 +460,11 @@ hr {
 .form-floating > .form-control-plaintext:focus::placeholder,
 .form-floating > .form-control:focus::placeholder {
     text-align: start;
+}
+
+/* === Fix footer === */
+.footer {
+    position: relative !important;
+    bottom: 0;
+    width: 100%;
 }
