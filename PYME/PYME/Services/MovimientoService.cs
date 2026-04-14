@@ -8,21 +8,32 @@ namespace PYME.Services
     {
         private readonly IMovimientoRepository _repository;
         private readonly IProductoRepository _productoRepository;
+        private readonly IUsuarioService _usuarioService;
 
-        public MovimientoService(IMovimientoRepository repository, IProductoRepository productoRepository)
+        public MovimientoService(
+            IMovimientoRepository repository,
+            IProductoRepository productoRepository,
+            IUsuarioService usuarioService)
         {
             _repository = repository;
             _productoRepository = productoRepository;
+            _usuarioService = usuarioService;
         }
 
-        public List<MovimientoInventario> ObtenerTodos()
-            => _repository.ObtenerTodos();
+        public Task<List<MovimientoInventario>> ObtenerTodosAsync()
+            => Task.FromResult(_repository.ObtenerTodos());
 
-        public List<MovimientoInventario> ObtenerPorProducto(int idProducto)
-            => _repository.ObtenerPorProducto(idProducto);
+        public Task<MovimientoInventario?> ObtenerDetalleAsync(int id)
+            => Task.FromResult(_repository.ObtenerPorId(id));
 
-        public MovimientoInventario? ObtenerDetalle(int id)
-            => _repository.ObtenerPorId(id);
+        public Task<List<MovimientoInventario>> ObtenerPorProductoAsync(int idProducto)
+            => Task.FromResult(_repository.ObtenerPorProducto(idProducto));
+
+        public Task<List<Producto>> ObtenerProductosAsync()
+            => Task.FromResult(_productoRepository.ObtenerTodos());
+
+        public async Task<List<Usuario>> ObtenerUsuariosAsync()
+            => await _usuarioService.ObtenerTodosAsync();
 
         public List<SelectListItem> ObtenerDescripcionesEntrada() => new List<SelectListItem>
         {
@@ -32,8 +43,8 @@ namespace PYME.Services
 
         public List<SelectListItem> ObtenerDescripcionesSalida() => new List<SelectListItem>
         {
-            new("Venta",  "Venta"),
-            new("Merma",  "Merma")
+            new("Venta", "Venta"),
+            new("Merma", "Merma")
         };
 
         public (bool success, string mensaje) RegistrarEntrada(MovimientoInventario movimiento)

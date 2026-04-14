@@ -5,9 +5,11 @@ namespace PYME.Services
 {
     public interface IMovimientoService
     {
-        List<MovimientoInventario> ObtenerTodos();
-        List<MovimientoInventario> ObtenerPorProducto(int idProducto);
-        MovimientoInventario? ObtenerDetalle(int id);
+        Task<List<MovimientoInventario>> ObtenerTodosAsync();
+        Task<MovimientoInventario?> ObtenerDetalleAsync(int id);
+        Task<List<MovimientoInventario>> ObtenerPorProductoAsync(int idProducto);
+        Task<List<Producto>> ObtenerProductosAsync();
+        Task<List<Usuario>> ObtenerUsuariosAsync();
 
         List<SelectListItem> ObtenerDescripcionesEntrada();
         List<SelectListItem> ObtenerDescripcionesSalida();

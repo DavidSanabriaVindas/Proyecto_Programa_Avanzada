@@ -5,6 +5,7 @@ using System.Text;
 
 namespace PYME.Controllers
 {
+    [Authorize]
     [Route("dashboard")]
     [Authorize(Roles = "Admin,Gerente")]
     public class DashboardController : Controller
@@ -35,7 +36,6 @@ namespace PYME.Controllers
             var fin = fechaFin ?? hoy;
 
             var vm = _dashboardService.ObtenerDashboard(inicio, fin);
-
             return Json(new
             {
                 totalUnidadesVendidas = vm.TotalUnidadesVendidas,
@@ -52,6 +52,7 @@ namespace PYME.Controllers
         {
             var vm = _dashboardService.ObtenerHistorialProducto(
                 idProducto ?? 0, fechaInicio, fechaFin, tipoFiltro);
+
             return View(vm);
         }
 

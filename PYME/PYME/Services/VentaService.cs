@@ -8,15 +8,18 @@ namespace PYME.Services
         private readonly IVentaRepository _ventaRepository;
         private readonly IProductoRepository _productoRepository;
         private readonly IMovimientoRepository _movimientoRepository;
+        private readonly IClienteRepository _clienteRepository;
 
         public VentaService(
             IVentaRepository ventaRepository,
             IProductoRepository productoRepository,
-            IMovimientoRepository movimientoRepository)
+            IMovimientoRepository movimientoRepository,
+            IClienteRepository clienteRepository)
         {
             _ventaRepository = ventaRepository;
             _productoRepository = productoRepository;
             _movimientoRepository = movimientoRepository;
+            _clienteRepository = clienteRepository;
         }
 
         public List<Venta> ObtenerTodos()
@@ -24,6 +27,14 @@ namespace PYME.Services
 
         public Venta? ObtenerDetalle(int id)
             => _ventaRepository.ObtenerPorId(id);
+
+        public List<Cliente> ObtenerClientes()
+            => _clienteRepository.ObtenerTodos();
+
+        public List<Producto> ObtenerProductosDisponibles()
+            => _productoRepository.ObtenerTodos()
+                .Where(p => p.Estado && p.Stock_Actual > 0)
+                .ToList();
 
         public (bool success, string mensaje) CrearVenta(Venta venta, List<Detalle_Venta> detalles)
         {
@@ -33,7 +44,6 @@ namespace PYME.Services
             foreach (var detalle in detalles)
             {
                 var producto = _productoRepository.ObtenerPorId(detalle.Id_Producto);
-
                 if (producto == null)
                     return (false, $"Producto con ID {detalle.Id_Producto} no encontrado.");
 
@@ -54,13 +64,11 @@ namespace PYME.Services
             venta.Total = total;
             venta.Fecha_Venta = DateTime.Now;
             venta.Detalles = detalles;
-
             _ventaRepository.Agregar(venta);
 
             foreach (var detalle in detalles)
             {
                 var producto = _productoRepository.ObtenerPorId(detalle.Id_Producto)!;
-
                 producto.Stock_Actual -= detalle.Cantidad;
                 producto.Fecha_Actualizacion = DateTime.Now;
                 _productoRepository.Actualizar(producto);
@@ -82,13 +90,11 @@ namespace PYME.Services
         public (bool success, string mensaje) ActualizarEstado(int id, string nuevoEstado)
         {
             var venta = _ventaRepository.ObtenerPorId(id);
-
             if (venta == null)
                 return (false, "Venta no encontrada.");
 
             venta.Estado = nuevoEstado;
             _ventaRepository.Actualizar(venta);
-
             return (true, "Estado actualizado.");
         }
 
@@ -96,7 +102,6 @@ namespace PYME.Services
         {
             var venta = _ventaRepository.ObtenerPorId(id);
             if (venta == null) return false;
-
             _ventaRepository.Eliminar(id);
             return true;
         }
